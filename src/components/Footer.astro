@@ -14,10 +14,12 @@ const year = new Date().getFullYear();
         {site.social.linkedin && <a class="btn btn--ghost" href={site.social.linkedin} rel="me noopener" target="_blank">LinkedIn</a>}
       </div>
     </div>
-    <nav class="span-12 span-3 start-8" aria-label="Footer">
+    <nav class="span-12 span-3 footer-nav" aria-label="Footer">
       <p class="eyebrow">Explore</p>
       <ul>
         {nav.map((n) => <li><a href={url(n.href)}>{n.label}</a></li>)}
+        <li><a href={url('/training-request')}>Request training</a></li>
+        <li><a href={url('/#discovery')}>Discovery call</a></li>
         <li><a href={url('/contact')}>Contact</a></li>
       </ul>
     </nav>
@@ -53,6 +55,7 @@ const year = new Date().getFullYear();
   .site-footer { border-top: 1px solid var(--color-line); padding-block: var(--space-xl) var(--space-l); background: var(--color-surface-sunken); }
   .sign { font-family: var(--font-display); font-size: var(--text-2xl); line-height: 1.1; letter-spacing: var(--tracking-heading); }
   .sign em { color: var(--color-accent); }
+  @media (min-width: 60rem) { .footer-nav { grid-column: 7 / span 3; } }
   ul { list-style: none; padding: 0; margin: var(--space-xs) 0 0; display: grid; gap: var(--space-2xs); }
   ul a { text-decoration: none; font-size: var(--text-sm); }
   .theme { margin-top: var(--space-s); background: none; border: 0; padding: 0; font: inherit; font-size: var(--text-sm); color: var(--color-muted); text-decoration: underline; text-underline-offset: 0.2em; cursor: pointer; }

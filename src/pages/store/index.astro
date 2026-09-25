@@ -1,0 +1,113 @@
+---
+import Base from '../../layouts/Base.astro';
+import PageHead from '../../components/PageHead.astro';
+import ProductCover from '../../components/ProductCover.astro';
+import { getProducts, productCategoryLabel, formatPrice } from '../../lib/content';
+import { url } from '../../lib/url';
+
+const products = await getProducts();
+const categories = Object.entries(productCategoryLabel).filter(([k]) => products.some((p) => p.data.category === k));
+---
+
+<Base title="Store" description="E-books, training materials and practical tools for owners, lenders, consultants and instructors.">
+  <PageHead
+    eyebrow="Store"
+    title="Tools I use with clients — <em>now yours.</em>"
+    lede="E-books, workbooks and spreadsheet tools built from real consulting engagements and the courses I teach. Instant download after checkout."
+  />
+
+  <section class="section--tight container">
+    {products.length === 0 ? (
+      <div class="card empty">
+        <p class="h3">The store opens soon.</p>
+        <p class="muted">E-books, workbooks and tools are on the way. <a href={url('/contact?topic=store')}>Ask to be notified.</a></p>
+      </div>
+    ) : (
+      <>
+        {categories.length > 1 && (
+          <div class="filters" role="group" aria-label="Filter by category">
+            <button type="button" data-filter="all" aria-pressed="true">All</button>
+            {categories.map(([k, label]) => <button type="button" data-filter={k} aria-pressed="false">{label}</button>)}
+          </div>
+        )}
+        <div class="grid">
+          {products.map((p) => (
+            <article class="product" data-cat={p.data.category}>
+              <a href={url(`/store/${p.id}`)} class="cover-link" tabindex="-1" aria-hidden="true"><ProductCover product={p} /></a>
+              <div class="info">
+                <p class="meta">{productCategoryLabel[p.data.category]}{p.data.format && ` · ${p.data.format}`}</p>
+                <h2 class="h3"><a href={url(`/store/${p.id}`)}>{p.data.title}</a></h2>
+                <p class="muted desc">{p.data.description}</p>
+                <div class="buy-row">
+                  {p.data.status === 'available' && p.data.buyUrl ? (
+                    <>
+                      <span class="price num">{formatPrice(p.data.price)}{p.data.compareAtPrice && <s>{formatPrice(p.data.compareAtPrice)}</s>}</span>
+                      <a class="btn" href={p.data.buyUrl} target="_blank" rel="noopener">Buy now</a>
+                    </>
+                  ) : (
+                    <>
+                      <span class="tag">Coming soon</span>
+                      <a class="link-arrow" href={url('/contact?topic=store')}>Notify me →</a>
+                    </>
+                  )}
+                </div>
+              </div>
+            </article>
+          ))}
+        </div>
+      </>
+    )}
+  </section>
+
+  <section class="section container grid-12 note">
+    <div class="span-12 span-5">
+      <p class="eyebrow">Buying for a group?</p>
+      <h2 class="h2">Licenses for teams, lenders and associations.</h2>
+    </div>
+    <div class="span-12 span-6 start-7 stack">
+      <p class="lede">Need copies for staff, members or a class — or a version customized with your organization’s branding? Bulk and organizational licenses are available.</p>
+      <div class="cluster">
+        <a class="btn" href={url('/training-request')}>Request custom materials <span class="arrow" aria-hidden="true">→</span></a>
+        <a class="btn btn--ghost" href={url('/contact?topic=store')}>Ask a question</a>
+      </div>
+      <p class="muted small">Checkout is handled securely by our payment provider. Digital products are delivered by email immediately after purchase.</p>
+    </div>
+  </section>
+</Base>
+
+<script>
+  const buttons = document.querySelectorAll<HTMLButtonElement>('[data-filter]');
+  const items = document.querySelectorAll<HTMLElement>('[data-cat]');
+  buttons.forEach((b) =>
+    b.addEventListener('click', () => {
+      const f = b.dataset.filter;
+      buttons.forEach((x) => x.setAttribute('aria-pressed', String(x === b)));
+      items.forEach((i) => (i.hidden = f !== 'all' && i.dataset.cat !== f));
+    }),
+  );
+</script>
+
+<style>
+  .empty { display: grid; gap: var(--space-xs); max-width: 40rem; margin-bottom: var(--space-xl); }
+  .filters { display: flex; flex-wrap: wrap; gap: var(--space-2xs); margin-bottom: var(--space-l); }
+  .filters button {
+    font: inherit; font-size: var(--text-sm); font-weight: var(--weight-semibold);
+    padding: 0.45em 1em; border-radius: 99px; cursor: pointer;
+    background: transparent; color: var(--color-ink-soft); border: 1px solid var(--color-line-strong);
+  }
+  .filters button[aria-pressed='true'] { background: var(--color-ink); color: var(--color-surface); border-color: var(--color-ink); }
+  .grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(15rem, 1fr)); gap: var(--space-xl) var(--gutter); padding-bottom: var(--space-xl); }
+  .product { display: grid; gap: var(--space-m); align-content: start; }
+  .product[hidden] { display: none; }
+  .cover-link { display: block; text-decoration: none; transition: transform var(--duration-l) var(--ease-out); }
+  .cover-link:hover { transform: translateY(-4px); }
+  .info { display: grid; gap: var(--space-2xs); }
+  .meta { font-size: var(--text-xs); letter-spacing: 0.06em; text-transform: uppercase; color: var(--color-muted); }
+  .info h2 a { text-decoration: none; }
+  .desc { font-size: var(--text-sm); }
+  .buy-row { display: flex; align-items: center; justify-content: space-between; gap: var(--space-s); margin-top: var(--space-xs); padding-top: var(--space-s); border-top: 1px solid var(--color-line); }
+  .price { font-size: var(--text-xl); }
+  .price s { font-size: var(--text-sm); color: var(--color-muted); margin-left: 0.4em; }
+  .note { align-items: end; }
+  .small { font-size: var(--text-sm); }
+</style>

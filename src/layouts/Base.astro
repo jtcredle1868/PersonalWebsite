@@ -26,7 +26,8 @@ const ogImage = new URL(url(image), Astro.site);
     <title>{pageTitle}</title>
     <meta name="description" content={description} />
     <link rel="canonical" href={canonical} />
-    <link rel="icon" href={url('/favicon.svg')} type="image/svg+xml" />
+    <link rel="icon" href={url('/favicon.png')} type="image/png" />
+    <link rel="apple-touch-icon" href={url('/apple-touch-icon.png')} />
     <link rel="alternate" type="application/rss+xml" title={`${site.name} — Blog`} href={url('/rss.xml')} />
     <link rel="sitemap" href={url('/sitemap-index.xml')} />
 
@@ -38,7 +39,7 @@ const ogImage = new URL(url(image), Astro.site);
     <meta name="twitter:card" content="summary_large_image" />
 
     <meta name="theme-color" content="#f5f1e9" media="(prefers-color-scheme: light)" />
-    <meta name="theme-color" content="#121412" media="(prefers-color-scheme: dark)" />
+    <meta name="theme-color" content="#111416" media="(prefers-color-scheme: dark)" />
 
     <link rel="preconnect" href="https://fonts.googleapis.com" />
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />

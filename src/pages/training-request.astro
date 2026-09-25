@@ -1,0 +1,184 @@
+---
+import Base from '../layouts/Base.astro';
+import PageHead from '../components/PageHead.astro';
+import FormHidden from '../components/FormHidden.astro';
+import { formAction } from '../lib/forms';
+import { courses, site } from '../data/site';
+import { url } from '../lib/url';
+
+const deliverables = [
+  { value: 'Live workshop or seminar', hint: 'Half-day, full-day or multi-day, in person' },
+  { value: 'Virtual training / webinar', hint: 'Live online session for your group' },
+  { value: 'Multi-week course or series', hint: 'A cohort that meets over several weeks' },
+  { value: 'Keynote or conference breakout', hint: 'A single high-impact session' },
+  { value: 'Custom training content', hint: 'Slide decks, workbooks, job aids, e-learning modules or recorded video' },
+  { value: 'Train-the-trainer', hint: 'Equip your own instructors to deliver the material' },
+];
+const audiences = ['Business owners / entrepreneurs', 'Lenders / bankers / credit union staff', 'Consultants / advisors', 'Managers / sales teams', 'Instructors / faculty', 'Chamber or association members', 'Students', 'Other'];
+const topics = [...courses.map((c) => c.title), 'Strategic planning (6-C method)', 'AI for small business'];
+---
+
+<Base title="Request Custom Training" description="Request a custom workshop, course or training content on capital, finance, Excel, sales, strategy or facilitation.">
+  <PageHead
+    eyebrow="Custom training"
+    title="Training built around <em>your people.</em>"
+    lede="Tell me who you’re training and what they need to be able to do. I’ll design a workshop, course or content package to fit — from a single lunch-and-learn to a complete curriculum your own team can deliver."
+  />
+
+  <section class="section--tight container grid-12">
+    <form class="span-12 span-8 card tr-form" action={formAction} method="post">
+      <input type="hidden" name="request_type" value="Custom training request" />
+
+      <fieldset>
+        <legend>1 · Contact</legend>
+        <div class="two">
+          <div class="field"><label for="name">Full name *</label><input id="name" name="name" autocomplete="name" required /></div>
+          <div class="field"><label for="email">Email *</label><input id="email" name="email" type="email" autocomplete="email" required /></div>
+        </div>
+        <div class="two">
+          <div class="field"><label for="phone">Telephone</label><input id="phone" name="phone" type="tel" autocomplete="tel" /></div>
+          <div class="field"><label for="org">Organization *</label><input id="org" name="organization" autocomplete="organization" required /></div>
+        </div>
+        <div class="field"><label for="role">Your role / title</label><input id="role" name="role" autocomplete="organization-title" /></div>
+      </fieldset>
+
+      <fieldset>
+        <legend>2 · What do you need?</legend>
+        <div class="choices">
+          {deliverables.map((d, i) => (
+            <label class="choice">
+              <input type="checkbox" name="format" value={d.value} checked={i === 0} />
+              <span><strong>{d.value}</strong><small>{d.hint}</small></span>
+            </label>
+          ))}
+        </div>
+      </fieldset>
+
+      <fieldset>
+        <legend>3 · Topics</legend>
+        <p class="muted small">Choose any that apply — or describe your own below.</p>
+        <div class="topics">
+          {topics.map((t) => (
+            <label class="pill"><input type="checkbox" name="topics" value={t} /><span>{t}</span></label>
+          ))}
+        </div>
+        <div class="field"><label for="custom_topic">Other topic or custom subject</label><input id="custom_topic" name="custom_topic" /></div>
+      </fieldset>
+
+      <fieldset>
+        <legend>4 · Audience & logistics</legend>
+        <div class="two">
+          <div class="field">
+            <label for="audience">Who is the audience?</label>
+            <select id="audience" name="audience">{audiences.map((a) => <option>{a}</option>)}</select>
+          </div>
+          <div class="field">
+            <label for="size">Number of participants</label>
+            <select id="size" name="participants"><option>1–10</option><option>11–25</option><option>26–50</option><option>51–100</option><option>100+</option><option>Not sure yet</option></select>
+          </div>
+        </div>
+        <div class="two">
+          <div class="field">
+            <label for="level">Experience level</label>
+            <select id="level" name="experience_level"><option>Beginner</option><option>Intermediate</option><option>Advanced</option><option>Mixed</option></select>
+          </div>
+          <div class="field">
+            <label for="delivery">Delivery</label>
+            <select id="delivery" name="delivery"><option>In person</option><option>Virtual (live)</option><option>Hybrid</option><option>Self-paced / recorded</option><option>Content only — we’ll deliver it</option></select>
+          </div>
+        </div>
+        <div class="two">
+          <div class="field"><label for="location">Location (if in person)</label><input id="location" name="location" placeholder="City, State" /></div>
+          <div class="field"><label for="dates">Preferred date(s) or deadline</label><input id="dates" name="preferred_dates" placeholder="e.g. week of March 9, or by Q2" /></div>
+        </div>
+        <div class="two">
+          <div class="field">
+            <label for="length">Desired length</label>
+            <select id="length" name="length"><option>1 hour or less</option><option>Half day</option><option>Full day</option><option>2+ days</option><option>Multi-week series</option><option>Not sure — recommend</option></select>
+          </div>
+          <div class="field">
+            <label for="budget">Budget range</label>
+            <select id="budget" name="budget"><option>Prefer to discuss</option><option>Under $1,000</option><option>$1,000 – $2,500</option><option>$2,500 – $5,000</option><option>$5,000 – $10,000</option><option>$10,000+</option><option>Sponsored / grant-funded</option></select>
+          </div>
+        </div>
+      </fieldset>
+
+      <fieldset>
+        <legend>5 · Goals</legend>
+        <div class="field"><label for="goals">What should participants be able to do afterward? *</label><textarea id="goals" name="learning_goals" rows="5" required placeholder="e.g. Our members should understand how a commercial loan is underwritten and prepare a loan package before meeting a lender."></textarea></div>
+        <div class="field"><label for="materials">Existing materials or links I should see</label><input id="materials" name="existing_materials" placeholder="Links to current slides, curricula or videos" /></div>
+        <label class="check"><input type="checkbox" name="response_requested" value="Yes — please send a proposal" checked /> <span>Please follow up with a proposal</span></label>
+      </fieldset>
+
+      <FormHidden subject="Custom training request — john-thomas-credle.com" />
+      <div><button class="btn" type="submit">Submit training request <span class="arrow" aria-hidden="true">→</span></button></div>
+    </form>
+
+    <aside class="span-12 span-4 start-9 side">
+      <figure>
+        <img class="photo" src={url('/images/workshop.jpg')} alt="Participants at round tables during one of Thomas’s workshops" width="727" height="545" loading="lazy" />
+      </figure>
+      <div>
+        <p class="eyebrow">How it works</p>
+        <ol class="how">
+          <li>I review your request and reply within two business days.</li>
+          <li>A short call to confirm goals, audience and format.</li>
+          <li>You receive a proposal with outline, schedule and fee.</li>
+          <li>I design, deliver — and follow up on results.</li>
+        </ol>
+      </div>
+      <div>
+        <p class="eyebrow">See existing courses</p>
+        <p><a class="link-arrow" href={url('/videos')}>Course catalog →</a></p>
+      </div>
+      <div>
+        <p class="eyebrow">Questions?</p>
+        <p><a href={`mailto:${site.email}`}>{site.email}</a></p>
+      </div>
+    </aside>
+  </section>
+</Base>
+
+<style>
+  .tr-form { display: grid; gap: var(--space-l); padding: clamp(1.25rem, 0.8rem + 2vw, 2.5rem); margin-bottom: var(--space-xl); }
+  fieldset { border: 0; padding: 0; margin: 0; display: grid; gap: var(--space-m); min-width: 0; }
+  legend {
+    font-size: var(--text-xs); font-weight: var(--weight-semibold); letter-spacing: var(--tracking-label); text-transform: uppercase;
+    color: var(--color-muted); padding: 0 0 var(--space-xs); margin-bottom: var(--space-2xs); width: 100%; border-bottom: 1px solid var(--color-line);
+  }
+  .two { display: grid; grid-template-columns: 1fr 1fr; gap: var(--space-m); }
+  @media (max-width: 40rem) { .two { grid-template-columns: 1fr; } }
+  .small { font-size: var(--text-sm); }
+
+  .choices { display: grid; grid-template-columns: 1fr 1fr; gap: var(--space-xs); }
+  @media (max-width: 40rem) { .choices { grid-template-columns: 1fr; } }
+  .choice {
+    display: flex; gap: var(--space-xs); align-items: flex-start; cursor: pointer;
+    padding: var(--space-s); border: 1px solid var(--color-line-strong); border-radius: var(--radius-m);
+    transition: border-color var(--duration-s), background var(--duration-s);
+  }
+  .choice:has(input:checked) { border-color: var(--color-accent); background: var(--color-accent-soft); }
+  .choice input { margin-top: 0.25em; accent-color: var(--color-accent); width: 1.05rem; height: 1.05rem; flex-shrink: 0; }
+  .choice span { display: grid; gap: 0.15em; font-size: var(--text-sm); }
+  .choice small { color: var(--color-muted); font-size: var(--text-xs); }
+
+  .topics { display: flex; flex-wrap: wrap; gap: var(--space-2xs); }
+  .pill { cursor: pointer; }
+  .pill input { position: absolute; opacity: 0; width: 1px; height: 1px; }
+  .pill span {
+    display: inline-block; font-size: var(--text-sm); padding: 0.4em 0.9em; border-radius: 99px;
+    border: 1px solid var(--color-line-strong); color: var(--color-ink-soft);
+    transition: background var(--duration-s), color var(--duration-s), border-color var(--duration-s);
+  }
+  .pill input:checked + span { background: var(--color-accent); border-color: var(--color-accent); color: var(--color-accent-ink); }
+  .pill input:focus-visible + span { outline: 2px solid var(--color-focus); outline-offset: 2px; }
+
+  .check { display: flex; align-items: center; gap: var(--space-xs); font-weight: var(--weight-semibold); cursor: pointer; }
+  .check input { width: 1.15rem; height: 1.15rem; accent-color: var(--color-accent); }
+
+  .side { display: grid; gap: var(--space-l); align-content: start; }
+  .side figure { padding: 0 14px 14px 0; }
+  .side .eyebrow { margin-bottom: var(--space-2xs); }
+  .how { margin: 0; padding-left: 1.2em; display: grid; gap: var(--space-2xs); font-size: var(--text-sm); }
+  .how li::marker { color: var(--color-copper); font-family: var(--font-display); }
+</style>

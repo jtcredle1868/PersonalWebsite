@@ -1,0 +1,60 @@
+---
+import { render } from 'astro:content';
+import Base from '../../layouts/Base.astro';
+import ProductCover from '../../components/ProductCover.astro';
+import { getProducts, productCategoryLabel, formatPrice } from '../../lib/content';
+import { url } from '../../lib/url';
+
+export async function getStaticPaths() {
+  const products = await getProducts();
+  return products.map((product) => ({ params: { slug: product.id }, props: { product } }));
+}
+
+const { product } = Astro.props;
+const { Content } = await render(product);
+const d = product.data;
+const available = d.status === 'available' && d.buyUrl;
+---
+
+<Base title={d.title} description={d.description} image={d.cover}>
+  <article class="container grid-12 wrap">
+    <div class="span-12 span-5 cover-col">
+      <ProductCover product={product} size="l" />
+    </div>
+    <div class="span-12 span-6 start-7 stack">
+      <p class="eyebrow"><a href={url('/store')}>Store</a> · {productCategoryLabel[d.category]}</p>
+      <h1>{d.title}</h1>
+      {d.subtitle && <p class="lede">{d.subtitle}</p>}
+      <div class="buy card">
+        {available ? (
+          <>
+            <p class="price num">{formatPrice(d.price)}{d.compareAtPrice && <s>{formatPrice(d.compareAtPrice)}</s>}</p>
+            <a class="btn" href={d.buyUrl} target="_blank" rel="noopener">Buy now <span class="arrow" aria-hidden="true">→</span></a>
+          </>
+        ) : (
+          <>
+            <span class="tag">Coming soon</span>
+            <a class="btn" href={url('/contact?topic=store')}>Notify me when it’s ready</a>
+          </>
+        )}
+        {d.format && <p class="muted small">Format: {d.format}</p>}
+      </div>
+      <p>{d.description}</p>
+      <div class="prose prose--plain"><Content /></div>
+      <p class="muted small">Questions or need a team license? <a href={url('/contact?topic=store')}>Get in touch.</a></p>
+    </div>
+  </article>
+</Base>
+
+<style>
+  .wrap { padding-block: var(--space-xl) var(--space-2xl); }
+  .cover-col { max-width: 26rem; }
+  @media (min-width: 60rem) { .cover-col { position: sticky; top: 6rem; align-self: start; } }
+  h1 { font-size: var(--text-3xl); }
+  .eyebrow a { text-decoration: none; }
+  .buy { display: flex; flex-wrap: wrap; align-items: center; gap: var(--space-s) var(--space-m); }
+  .buy .small { flex-basis: 100%; }
+  .price { font-size: var(--text-2xl); line-height: 1; }
+  .price s { font-size: var(--text-base); color: var(--color-muted); margin-left: 0.4em; }
+  .small { font-size: var(--text-sm); }
+</style>

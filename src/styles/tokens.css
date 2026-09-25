@@ -1,7 +1,8 @@
 /* ==========================================================================
    Design tokens — the single source of truth.
    Direction: editorial / "private-bank annual report".
-   Paper + ink, one deep-green accent, brass used sparingly for rules.
+   Brand colors inherited from the J. Thomas Credle logo:
+   navy (primary accent) and copper (hairlines, numerals, small details).
    ========================================================================== */
 
 :root {
@@ -14,15 +15,15 @@
   --color-muted: #6b6a66;
   --color-line: #d9d1c2;
   --color-line-strong: #b9ae99;
-  --color-accent: #1d4a38;           /* ledger green */
+  --color-accent: #123f58;           /* logo navy */
   --color-accent-ink: #f5f1e9;       /* text on accent */
-  --color-accent-soft: #dfe7df;
-  --color-brass: #9a7a45;            /* hairlines, numerals, never large fills */
-  --color-focus: #2f7a5a;
+  --color-accent-soft: #dde6ec;
+  --color-copper: #a2663f;           /* logo copper — hairlines, numerals, never large fills */
+  --color-focus: #2a6f96;
   /* Fixed (theme-independent) values for text over photography */
   --color-on-photo: #f5f1e9;
   --color-on-photo-muted: #cfc9bd;
-  --color-photo-scrim: 12 22 17; /* rgb triplet */
+  --color-photo-scrim: 9 28 40; /* rgb triplet (deep navy) */
 
   /* ---- Type ---- */
   --font-display: 'Fraunces', 'Iowan Old Style', 'Palatino Linotype', Georgia, serif;
@@ -77,36 +78,36 @@
 
 @media (prefers-color-scheme: dark) {
   :root:not([data-theme='light']) {
-    --color-surface: #121412;
-    --color-surface-raised: #1a1d1a;
-    --color-surface-sunken: #0c0e0c;
+    --color-surface: #111416;
+    --color-surface-raised: #191d20;
+    --color-surface-sunken: #0b0d0f;
     --color-ink: #ece7dc;
     --color-ink-soft: #cfc9bd;
     --color-muted: #9b978d;
     --color-line: #2c302c;
     --color-line-strong: #454a44;
-    --color-accent: #8cc3a6;
-    --color-accent-ink: #0f1a14;
-    --color-accent-soft: #1d2a23;
-    --color-brass: #c9a86d;
-    --color-focus: #a6d9bd;
+    --color-accent: #8fbfd9;
+    --color-accent-ink: #0b1c26;
+    --color-accent-soft: #16252e;
+    --color-copper: #d39a70;
+    --color-focus: #a9d2ea;
     --shadow-card: 0 1px 0 var(--color-line), 0 18px 40px -28px rgb(0 0 0 / 0.8);
   }
 }
 
 :root[data-theme='dark'] {
-  --color-surface: #121412;
-  --color-surface-raised: #1a1d1a;
-  --color-surface-sunken: #0c0e0c;
+  --color-surface: #111416;
+  --color-surface-raised: #191d20;
+  --color-surface-sunken: #0b0d0f;
   --color-ink: #ece7dc;
   --color-ink-soft: #cfc9bd;
   --color-muted: #9b978d;
   --color-line: #2c302c;
   --color-line-strong: #454a44;
-  --color-accent: #8cc3a6;
-  --color-accent-ink: #0f1a14;
-  --color-accent-soft: #1d2a23;
-  --color-brass: #c9a86d;
-  --color-focus: #a6d9bd;
+  --color-accent: #8fbfd9;
+  --color-accent-ink: #0b1c26;
+  --color-accent-soft: #16252e;
+  --color-copper: #d39a70;
+  --color-focus: #a9d2ea;
   --shadow-card: 0 1px 0 var(--color-line), 0 18px 40px -28px rgb(0 0 0 / 0.8);
 }

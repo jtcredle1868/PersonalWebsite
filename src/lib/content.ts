@@ -13,6 +13,19 @@ export async function getBooks(): Promise<CollectionEntry<'books'>[]> {
   return (await getCollection('books', visible)).sort(newestFirst);
 }
 
+export async function getProducts(): Promise<CollectionEntry<'products'>[]> {
+  return (await getCollection('products', visible)).sort(
+    (a, b) => Number(b.data.featured) - Number(a.data.featured) || a.data.order - b.data.order || newestFirst(a, b),
+  );
+}
+
+export const productCategoryLabel = { 'e-book': 'E-book', training: 'Training material', tool: 'Tool', template: 'Template' } as const;
+
+export function formatPrice(n?: number): string {
+  if (n === undefined) return '';
+  return n === 0 ? 'Free' : n.toLocaleString('en-US', { style: 'currency', currency: 'USD', minimumFractionDigits: n % 1 ? 2 : 0 });
+}
+
 export const writingTypeLabel = { blog: 'Blog', article: 'Article', instruction: 'How-to' } as const;
 
 export function readingTime(body = ''): string {

@@ -59,7 +59,7 @@ const process = [
     <div class="span-12 span-4 start-9 stack">
       <p>Engagements are scoped to the need — a single loan-readiness review, a multi-month launch, or a workshop for your team or members.</p>
       <div class="cluster">
-        <a class="btn" href={url('/contact')}>Discuss your project <span class="arrow" aria-hidden="true">→</span></a>
+        <a class="btn" href={url('/#discovery')}>Request a discovery call <span class="arrow" aria-hidden="true">→</span></a>
         {site.bookingUrl && <a class="btn btn--ghost" href={site.bookingUrl}>Book a call</a>}
       </div>
     </div>
@@ -69,7 +69,7 @@ const process = [
 <style>
   .svc { padding-block: var(--space-xl); border-top: 1px solid var(--color-line); scroll-margin-top: 5rem; }
   .svc:last-child { border-bottom: 1px solid var(--color-line); }
-  .idx { color: var(--color-brass); font-size: var(--text-lg); margin-bottom: var(--space-xs); }
+  .idx { color: var(--color-copper); font-size: var(--text-lg); margin-bottom: var(--space-xs); }
   .svc ul { list-style: none; padding: 0; margin: var(--space-m) 0 0; display: grid; gap: var(--space-xs); }
   .svc li { padding: var(--space-xs) 0 var(--space-xs) 1.5rem; border-top: 1px solid var(--color-line); position: relative; }
   .svc li::before { content: '→'; position: absolute; left: 0; color: var(--color-accent); }
@@ -77,7 +77,7 @@ const process = [
   .process-wrap { background: var(--color-surface-sunken); }
   .process { list-style: none; padding: 0; margin: var(--space-l) 0 0; display: grid; grid-template-columns: repeat(4, 1fr); gap: var(--space-l); counter-reset: s; }
   .process li { display: grid; gap: var(--space-2xs); align-content: start; border-top: 2px solid var(--color-ink); padding-top: var(--space-m); }
-  .process .num { font-size: var(--text-3xl); line-height: 1; color: var(--color-brass); }
+  .process .num { font-size: var(--text-3xl); line-height: 1; color: var(--color-copper); }
   @media (max-width: 56rem) { .process { grid-template-columns: 1fr 1fr; } }
   @media (max-width: 34rem) { .process { grid-template-columns: 1fr; } }
 

@@ -9,9 +9,9 @@ const isActive = (href: string) => current === href || current.startsWith(`${hre
 
 <header class="site-header">
   <div class="container bar">
-    <a class="wordmark" href={url('/')} aria-label={`${site.name} — home`}>
-      <span class="mark" aria-hidden="true">TC</span>
-      <span class="name">Thomas Credle</span>
+    <a class="wordmark" href={url('/')}>
+      <img class="logo logo--light" src={url('/images/logo.png')} alt={`${site.fullName} — Business Consultant, home`} width="738" height="184" />
+      <img class="logo logo--dark" src={url('/images/logo-dark.png')} alt="" aria-hidden="true" width="738" height="184" />
     </a>
 
     <nav aria-label="Primary">
@@ -23,7 +23,7 @@ const isActive = (href: string) => current === href || current.startsWith(`${hre
         {nav.map((item) => (
           <li><a href={url(item.href)} aria-current={isActive(item.href) ? 'page' : undefined}>{item.label}</a></li>
         ))}
-        <li class="cta"><a class="btn" href={url('/contact')}>Work with me</a></li>
+        <li class="cta"><a class="btn" href={url('/#discovery')}>Discovery call</a></li>
       </ul>
     </nav>
   </div>
@@ -46,22 +46,23 @@ const isActive = (href: string) => current === href || current.startsWith(`${hre
     backdrop-filter: blur(10px);
     border-bottom: 1px solid var(--color-line);
   }
-  .bar { display: flex; align-items: center; justify-content: space-between; gap: var(--space-m); min-height: 4.25rem; }
-  .wordmark { display: inline-flex; align-items: center; gap: var(--space-xs); text-decoration: none; }
-  .mark {
-    font-family: var(--font-display); font-size: var(--text-sm); font-style: italic;
-    width: 2.25rem; height: 2.25rem; display: grid; place-items: center;
-    border: 1px solid var(--color-ink); border-radius: 50%;
-    letter-spacing: -0.04em;
+  .bar { display: flex; align-items: center; justify-content: space-between; gap: var(--space-m); min-height: 5rem; }
+  .wordmark { display: inline-flex; align-items: center; text-decoration: none; flex-shrink: 0; }
+  .logo { height: clamp(2.6rem, 2rem + 1.6vw, 3.4rem); width: auto; }
+  .logo--dark { display: none; }
+  :global(:root[data-theme='dark']) .logo--light { display: none; }
+  :global(:root[data-theme='dark']) .logo--dark { display: block; }
+  @media (prefers-color-scheme: dark) {
+    :global(:root:not([data-theme='light'])) .logo--light { display: none; }
+    :global(:root:not([data-theme='light'])) .logo--dark { display: block; }
   }
-  .name { font-family: var(--font-display); font-size: var(--text-lg); letter-spacing: -0.01em; }
   .menu { list-style: none; margin: 0; padding: 0; display: flex; align-items: center; gap: var(--space-m); }
   .menu a:not(.btn) { text-decoration: none; font-size: var(--text-sm); font-weight: var(--weight-medium); color: var(--color-ink-soft); position: relative; padding-block: 0.3rem; }
   .menu a:not(.btn):hover, .menu a[aria-current='page'] { color: var(--color-ink); }
-  .menu a[aria-current='page']::after { content: ''; position: absolute; left: 0; right: 0; bottom: -2px; height: 1px; background: var(--color-brass); }
+  .menu a[aria-current='page']::after { content: ''; position: absolute; left: 0; right: 0; bottom: -2px; height: 1px; background: var(--color-copper); }
   .menu-toggle { display: none; }
 
-  @media (max-width: 64rem) {
+  @media (max-width: 72rem) {
     .menu-toggle {
       display: grid; place-items: center; width: 2.75rem; height: 2.75rem;
       background: transparent; border: 1px solid var(--color-line-strong); border-radius: var(--radius-s); cursor: pointer; color: var(--color-ink);

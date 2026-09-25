@@ -21,7 +21,7 @@ const d = video.data;
     <h1>{d.title}</h1>
     <VideoEmbed title={d.title} youtubeId={d.youtubeId} vimeoId={d.vimeoId} videoUrl={d.videoUrl} />
     <p class="muted small">{formatDate(d.date)}{d.duration && ` · ${d.duration}`}</p>
-    <div class="prose">
+    <div class="prose prose--plain">
       <p>{d.description}</p>
       <Content />
     </div>
@@ -33,5 +33,4 @@ const d = video.data;
   .wrap h1 { font-size: var(--text-3xl); }
   .eyebrow a { text-decoration: none; }
   .small { font-size: var(--text-sm); }
-  .prose > p:first-of-type::first-letter { all: unset; }
 </style>

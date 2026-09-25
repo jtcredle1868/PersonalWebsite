@@ -11,12 +11,17 @@ const thumb = (v: (typeof videos)[number]) =>
 const topics = [...new Set(courses.map((c) => c.topic))];
 ---
 
-<Base title="Video & Courses" description="Video lessons and the course catalog: capital, finance, Excel, sales and facilitation.">
+<Base title="Training" description="Video lessons and the course catalog: capital, finance, Excel, sales and facilitation.">
   <PageHead
-    eyebrow="Video & instruction"
+    eyebrow="Training · video & courses"
     title="Lessons you can <em>watch</em>, courses you can book."
-    lede="Short video lessons on capital, lending and financial management, plus the workshops I teach for chambers, lenders, incubators and teams."
-  />
+    lede="Short video lessons on capital, lending and financial management, the workshops I teach for chambers, lenders, incubators and teams — and custom training built for your organization."
+  >
+    <div class="cluster">
+      <a class="btn" href={url('/training-request')}>Request custom training <span class="arrow" aria-hidden="true">→</span></a>
+      <a class="btn btn--ghost" href="#catalog">Browse the course catalog</a>
+    </div>
+  </PageHead>
 
   <section class="section--tight container">
     <div class="head-row">
@@ -48,12 +53,12 @@ const topics = [...new Set(courses.map((c) => c.topic))];
     )}
   </section>
 
-  <section class="section container grid-12">
+  <section class="section container grid-12" id="catalog">
     <div class="span-12 span-4">
       <p class="eyebrow">Course catalog</p>
       <h2 class="h2">Workshops I teach</h2>
-      <p class="muted">Each course runs as a live session, a webinar, or a multi-week series — and can be tailored for your members, clients or staff.</p>
-      <p class="book"><a class="btn" href={url('/contact?topic=workshop')}>Book a workshop <span class="arrow" aria-hidden="true">→</span></a></p>
+      <p class="muted">Each course runs as a live session, a webinar, or a multi-week series — and can be tailored for your members, clients or staff. Need something that isn’t listed? I design custom courses and training content too.</p>
+      <p class="book"><a class="btn" href={url('/training-request')}>Request training <span class="arrow" aria-hidden="true">→</span></a></p>
     </div>
     <div class="span-12 span-8">
       {topics.map((t) => (
