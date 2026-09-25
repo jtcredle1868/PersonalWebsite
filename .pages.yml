@@ -91,3 +91,44 @@ content:
           - { name: url, label: URL, type: string }
       - { name: draft, label: Draft, type: boolean, default: false }
       - { name: body, label: Full description / sample chapter, type: rich-text }
+
+  - name: products
+    label: Store products
+    type: collection
+    path: src/content/products
+    filename: '{primary}.md'
+    view:
+      fields: [title, category, price, status, draft]
+      primary: title
+    fields:
+      - { name: title, label: Title, type: string, required: true }
+      - { name: subtitle, label: Subtitle, type: string }
+      - { name: description, label: Short description (store grid), type: text, required: true }
+      - name: category
+        label: Category
+        type: select
+        default: e-book
+        options:
+          values:
+            - { value: e-book, label: E-book }
+            - { value: training, label: Training material }
+            - { value: tool, label: Tool }
+            - { value: template, label: Template }
+      - { name: format, label: 'Format (e.g. PDF, 48 pages / Excel .xlsx)', type: string }
+      - { name: price, label: Price (USD), type: number }
+      - { name: compareAtPrice, label: Original price (optional, shown struck through), type: number }
+      - { name: buyUrl, label: 'Checkout link (Stripe Payment Link, Gumroad, PayPal…)', type: string }
+      - name: status
+        label: Status
+        type: select
+        default: coming-soon
+        options:
+          values:
+            - { value: available, label: Available — show Buy button }
+            - { value: coming-soon, label: Coming soon }
+      - { name: cover, label: Cover image, type: image }
+      - { name: featured, label: Featured (shown first), type: boolean, default: false }
+      - { name: order, label: Sort order (lower = first), type: number, default: 100 }
+      - { name: date, label: Date, type: date, required: true }
+      - { name: draft, label: Draft (hidden), type: boolean, default: false }
+      - { name: body, label: Full description, type: rich-text }

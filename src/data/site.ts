@@ -30,10 +30,11 @@ export const site = {
 export const nav = [
   { label: 'About', href: '/about' },
   { label: 'Services', href: '/services' },
+  { label: 'Training', href: '/videos' },
   { label: 'Speaking', href: '/speaking' },
   { label: 'Blog', href: '/blog' },
-  { label: 'Video & Courses', href: '/videos' },
   { label: 'Books', href: '/books' },
+  { label: 'Store', href: '/store' },
 ];
 
 export const stats = [

@@ -53,4 +53,26 @@ const books = defineCollection({
   }),
 });
 
-export const collections = { writing, videos, books };
+/** Store products — e-books, training materials and tools. Checkout happens on an external payment link. */
+const products = defineCollection({
+  loader: glob({ pattern: '**/[^_]*.{md,mdx}', base: './src/content/products' }),
+  schema: z.object({
+    title: z.string(),
+    subtitle: z.string().optional(),
+    description: z.string(),
+    category: z.enum(['e-book', 'training', 'tool', 'template']),
+    format: z.string().optional(),
+    price: z.number().nonnegative().optional(),
+    compareAtPrice: z.number().nonnegative().optional(),
+    // Stripe Payment Link, Gumroad, Lemon Squeezy, PayPal, Square, etc.
+    buyUrl: z.string().url().optional(),
+    status: z.enum(['available', 'coming-soon']).default('coming-soon'),
+    cover: z.string().optional(),
+    featured: z.boolean().default(false),
+    order: z.number().default(100),
+    date: z.coerce.date(),
+    draft: z.boolean().default(false),
+  }),
+});
+
+export const collections = { writing, videos, books, products };

@@ -1,0 +1,24 @@
+---
+/* Hidden delivery fields shared by every form (subject line, thank-you redirect, spam honeypot). */
+import { usesFormSubmit } from '../lib/forms';
+import { url } from '../lib/url';
+
+interface Props { subject: string }
+const { subject } = Astro.props;
+const thanksUrl = new URL(url('/contact/thanks'), Astro.site).toString();
+---
+
+{usesFormSubmit ? (
+  <>
+    <input type="hidden" name="_subject" value={subject} />
+    <input type="hidden" name="_template" value="table" />
+    <input type="hidden" name="_captcha" value="false" />
+    <input type="hidden" name="_next" value={thanksUrl} />
+    <input type="text" name="_honey" tabindex="-1" autocomplete="off" class="visually-hidden" aria-hidden="true" />
+  </>
+) : (
+  <>
+    <input type="hidden" name="_subject" value={subject} />
+    <input type="text" name="_gotcha" tabindex="-1" autocomplete="off" class="visually-hidden" aria-hidden="true" />
+  </>
+)}

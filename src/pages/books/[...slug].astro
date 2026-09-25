@@ -24,7 +24,7 @@ const d = book.data;
       <h1>{d.title}</h1>
       {d.subtitle && <p class="lede">{d.subtitle}</p>}
       {d.links.length > 0 && <div class="cluster">{d.links.map((l) => <a class="btn" href={l.url} target="_blank" rel="noopener">{l.label}</a>)}</div>}
-      <div class="prose"><Content /></div>
+      <div class="prose prose--plain"><Content /></div>
     </div>
   </article>
 </Base>

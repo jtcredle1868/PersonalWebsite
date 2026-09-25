@@ -1,0 +1,37 @@
+---
+import type { CollectionEntry } from 'astro:content';
+import { url } from '../lib/url';
+import { productCategoryLabel } from '../lib/content';
+
+interface Props { product: CollectionEntry<'products'>; size?: 'm' | 'l' }
+const { product, size = 'm' } = Astro.props;
+const d = product.data;
+---
+
+{d.cover ? (
+  <img class={`cover cover--${size}`} src={url(d.cover)} alt={`Cover of ${d.title}`} loading="lazy" />
+) : (
+  <div class={`cover type-cover cover--${size}`} aria-hidden="true">
+    <span class="cat">{productCategoryLabel[d.category]}</span>
+    <span class="t">{d.title}</span>
+    <span class="foot"><img src={url('/images/logo-mark.png')} alt="" width="40" height="40" /> J. Thomas Credle</span>
+  </div>
+)}
+
+<style>
+  .cover { width: 100%; aspect-ratio: 4 / 5; object-fit: cover; border-radius: var(--radius-m); box-shadow: var(--shadow-card); }
+  .type-cover {
+    display: flex; flex-direction: column; justify-content: space-between; gap: var(--space-s);
+    padding: clamp(1rem, 0.7rem + 1.2vw, 1.75rem);
+    background:
+      linear-gradient(135deg, transparent 62%, color-mix(in srgb, var(--color-copper) 55%, transparent) 62.3%, transparent 63%),
+      linear-gradient(160deg, var(--color-accent), color-mix(in srgb, var(--color-accent) 72%, black));
+    color: var(--color-accent-ink);
+    border: 1px solid color-mix(in srgb, var(--color-accent) 60%, black);
+  }
+  .cat { font-size: var(--text-xs); font-weight: var(--weight-semibold); letter-spacing: var(--tracking-label); text-transform: uppercase; opacity: 0.8; }
+  .t { font-family: var(--font-display); font-size: var(--text-xl); line-height: 1.1; letter-spacing: -0.015em; text-wrap: balance; }
+  .cover--l .t { font-size: var(--text-2xl); }
+  .foot { display: flex; align-items: center; gap: var(--space-2xs); font-size: var(--text-xs); letter-spacing: 0.06em; text-transform: uppercase; }
+  .foot img { width: 1.6rem; height: 1.6rem; background: var(--color-on-photo); border-radius: 50%; padding: 2px; }
+</style>

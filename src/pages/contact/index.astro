@@ -2,12 +2,9 @@
 import Base from '../../layouts/Base.astro';
 import PageHead from '../../components/PageHead.astro';
 import { site } from '../../data/site';
-import { url } from '../../lib/url';
+import FormHidden from '../../components/FormHidden.astro';
+import { formAction as action } from '../../lib/forms';
 
-// Formspree if configured; otherwise FormSubmit emails submissions straight to site.email.
-const usesFormSubmit = !site.formEndpoint;
-const action = site.formEndpoint || `https://formsubmit.co/${site.email}`;
-const thanksUrl = new URL(url('/contact/thanks'), Astro.site).toString();
 
 const topics = [
   { value: 'Consulting', label: 'Consulting — capital, launch or finance' },
@@ -15,10 +12,11 @@ const topics = [
   { value: 'Workshop', label: 'Workshop or training for a group' },
   { value: 'Books', label: 'Books — notify me' },
   { value: 'Video', label: 'Video lesson request' },
+  { value: 'Store', label: 'Store — products, orders or licenses' },
   { value: 'Media / partnership', label: 'Media or partnership' },
   { value: 'Other', label: 'Something else' },
 ];
-const topicKeys: Record<string, string> = { consulting: 'Consulting', speaking: 'Speaking', workshop: 'Workshop', book: 'Books', video: 'Video', media: 'Media / partnership' };
+const topicKeys: Record<string, string> = { consulting: 'Consulting', speaking: 'Speaking', workshop: 'Workshop', book: 'Books', video: 'Video', store: 'Store', media: 'Media / partnership' };
 const platforms = ['LinkedIn', 'Facebook', 'Instagram', 'X (Twitter)', 'YouTube', 'TikTok', 'Other'];
 ---
 
@@ -96,17 +94,7 @@ const platforms = ['LinkedIn', 'Facebook', 'Instagram', 'X (Twitter)', 'YouTube'
           </div>
         </fieldset>
 
-        {usesFormSubmit ? (
-          <>
-            <input type="hidden" name="_subject" value="New message from john-thomas-credle.com" />
-            <input type="hidden" name="_template" value="table" />
-            <input type="hidden" name="_captcha" value="false" />
-            <input type="hidden" name="_next" value={thanksUrl} />
-            <input type="text" name="_honey" tabindex="-1" autocomplete="off" class="visually-hidden" aria-hidden="true" />
-          </>
-        ) : (
-          <input type="text" name="_gotcha" tabindex="-1" autocomplete="off" class="visually-hidden" aria-hidden="true" />
-        )}
+        <FormHidden subject="New message from john-thomas-credle.com" />
 
         <div class="submit">
           <button class="btn" type="submit">Send message <span class="arrow" aria-hidden="true">→</span></button>

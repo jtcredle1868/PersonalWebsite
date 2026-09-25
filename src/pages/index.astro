@@ -1,7 +1,8 @@
 ---
 import Base from '../layouts/Base.astro';
 import PostRow from '../components/PostRow.astro';
-import { stats, services, caseStudies, testimonials, site } from '../data/site';
+import DiscoveryCall from '../components/DiscoveryCall.astro';
+import { stats, services, caseStudies, testimonials } from '../data/site';
 import { getWriting } from '../lib/content';
 import { url } from '../lib/url';
 
@@ -26,8 +27,8 @@ const [lead, ...moreQuotes] = testimonials;
         the practical side of building a fundable business.
       </p>
       <div class="cluster reveal" style="--i:6">
-        <a class="btn" href={url('/services')}>How I can help <span class="arrow" aria-hidden="true">→</span></a>
-        <a class="btn btn--ghost" href={url('/blog')}>Read the latest</a>
+        <a class="btn" href="#discovery">Request a discovery call <span class="arrow" aria-hidden="true">→</span></a>
+        <a class="btn btn--ghost" href={url('/services')}>How I can help</a>
       </div>
     </div>
     <figure class="span-12 span-5 hero-photo reveal" style="--i:3">
@@ -135,17 +136,7 @@ const [lead, ...moreQuotes] = testimonials;
     </section>
   )}
 
-  <!-- Closing -->
-  <section class="section container grid-12 closing">
-    <h2 class="span-12 span-7 h2">Have a deal to finance, a business to launch, or a room to <em class="italic">teach?</em></h2>
-    <div class="span-12 span-5 stack">
-      <p class="lede">Tell me where you are and where you want to be. I’ll tell you honestly how I can help — or who can.</p>
-      <div class="cluster">
-        <a class="btn" href={url('/contact')}>Start a conversation <span class="arrow" aria-hidden="true">→</span></a>
-        {site.bookingUrl && <a class="btn btn--ghost" href={site.bookingUrl}>Book a call</a>}
-      </div>
-    </div>
-  </section>
+  <DiscoveryCall />
 </Base>
 
 <style>
@@ -161,7 +152,7 @@ const [lead, ...moreQuotes] = testimonials;
   .ledger > div { padding: var(--space-l) var(--space-m); border-left: 1px solid var(--color-line); display: grid; gap: var(--space-2xs); align-content: start; }
   .ledger > div:first-child { border-left: 0; padding-left: 0; }
   .ledger dt { font-size: var(--text-3xl); line-height: 1; color: var(--color-ink); letter-spacing: -0.03em; }
-  .ledger .plus { font-family: var(--font-body); font-weight: var(--weight-regular); font-size: 0.55em; vertical-align: 0.55em; margin-left: 0.05em; color: var(--color-brass); }
+  .ledger .plus { font-family: var(--font-body); font-weight: var(--weight-regular); font-size: 0.55em; vertical-align: 0.55em; margin-left: 0.05em; color: var(--color-copper); }
   .ledger dd { margin: 0; font-size: var(--text-sm); color: var(--color-muted); max-width: 22ch; }
   @media (max-width: 48rem) {
     .ledger { grid-template-columns: 1fr 1fr; }
@@ -177,7 +168,7 @@ const [lead, ...moreQuotes] = testimonials;
   .services li { display: grid; grid-template-columns: 3rem 1fr auto; gap: var(--space-m); padding-block: var(--space-l); border-top: 1px solid var(--color-line); align-items: baseline; }
   .services li:last-child { border-bottom: 1px solid var(--color-line); }
   .services li > div { display: grid; gap: var(--space-2xs); }
-  .idx { color: var(--color-brass); font-size: var(--text-lg); }
+  .idx { color: var(--color-copper); font-size: var(--text-lg); }
   @media (max-width: 40rem) { .services li { grid-template-columns: 2.25rem 1fr; } .services .link-arrow { grid-column: 2; } }
 
   .work { background: var(--color-surface-sunken); }
@@ -210,5 +201,4 @@ const [lead, ...moreQuotes] = testimonials;
   .head-row > div { display: grid; gap: var(--space-s); }
   .posts { border-bottom: 1px solid var(--color-line); }
 
-  .closing { align-items: end; }
 </style>

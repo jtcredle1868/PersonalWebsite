@@ -1,0 +1,80 @@
+---
+import FormHidden from './FormHidden.astro';
+import { formAction } from '../lib/forms';
+import { site } from '../data/site';
+
+const reasons = [
+  'Raising capital / getting a loan approved',
+  'Starting or structuring a business',
+  'Financial statements, forecasting or analytics',
+  'Strategic planning or sales',
+  'Custom training for my team or members',
+  'Speaking engagement',
+  'Something else',
+];
+---
+
+<section class="discovery" id="discovery" aria-labelledby="discovery-title">
+  <div class="container grid-12">
+    <div class="span-12 span-5 intro">
+      <p class="eyebrow">Discovery call</p>
+      <h2 id="discovery-title" class="h2">Start with a <em>conversation.</em></h2>
+      <p class="lede">A short, no-obligation call to understand where your business is, what you’re trying to accomplish, and whether I’m the right person to help.</p>
+      <ol class="steps">
+        <li><span class="num">1</span> Send the request — it takes a minute.</li>
+        <li><span class="num">2</span> I’ll reply within two business days to set a time.</li>
+        <li><span class="num">3</span> We talk for about 30 minutes by phone or video.</li>
+      </ol>
+      {site.bookingUrl && <p><a class="btn btn--ghost" href={site.bookingUrl}>Or pick a time on my calendar</a></p>}
+    </div>
+
+    <form class="span-12 span-6 start-7 card dc-form" action={formAction} method="post">
+      <input type="hidden" name="request_type" value="Discovery call" />
+      <div class="two">
+        <div class="field"><label for="dc-name">Full name *</label><input id="dc-name" name="name" autocomplete="name" required /></div>
+        <div class="field"><label for="dc-email">Email *</label><input id="dc-email" name="email" type="email" autocomplete="email" required /></div>
+      </div>
+      <div class="two">
+        <div class="field"><label for="dc-phone">Telephone *</label><input id="dc-phone" name="phone" type="tel" autocomplete="tel" required /></div>
+        <div class="field"><label for="dc-company">Business name</label><input id="dc-company" name="company" autocomplete="organization" /></div>
+      </div>
+      <div class="field">
+        <label for="dc-reason">What would you like to discuss?</label>
+        <select id="dc-reason" name="discuss">{reasons.map((r) => <option>{r}</option>)}</select>
+      </div>
+      <div class="two">
+        <div class="field">
+          <label for="dc-format">Call format</label>
+          <select id="dc-format" name="call_format"><option>Phone</option><option>Video (Teams / Zoom)</option><option>In person (Columbus area)</option></select>
+        </div>
+        <div class="field">
+          <label for="dc-time">Best time</label>
+          <select id="dc-time" name="best_time"><option>Any time</option><option>Morning</option><option>Afternoon</option><option>Evening</option></select>
+        </div>
+      </div>
+      <div class="field"><label for="dc-notes">Anything I should know beforehand?</label><textarea id="dc-notes" name="notes" rows="3"></textarea></div>
+      <FormHidden subject="Discovery call request — john-thomas-credle.com" />
+      <div><button class="btn" type="submit">Request a discovery call <span class="arrow" aria-hidden="true">→</span></button></div>
+    </form>
+  </div>
+</section>
+
+<style>
+  .discovery {
+    padding-block: var(--space-2xl);
+    border-block: 1px solid var(--color-line);
+    background:
+      radial-gradient(60rem 30rem at 0% 0%, color-mix(in srgb, var(--color-accent) 10%, transparent), transparent 70%),
+      radial-gradient(40rem 24rem at 100% 100%, color-mix(in srgb, var(--color-copper) 10%, transparent), transparent 70%),
+      var(--color-surface-sunken);
+    scroll-margin-top: 4rem;
+  }
+  .intro { display: grid; gap: var(--space-m); align-content: start; }
+  .intro h2 em { color: var(--color-accent); }
+  .steps { list-style: none; padding: 0; margin: 0; display: grid; gap: var(--space-xs); }
+  .steps li { display: flex; gap: var(--space-s); align-items: baseline; padding-top: var(--space-xs); border-top: 1px solid var(--color-line); }
+  .steps .num { color: var(--color-copper); font-size: var(--text-xl); min-width: 1.5rem; }
+  .dc-form { display: grid; gap: var(--space-m); padding: clamp(1.25rem, 0.8rem + 2vw, 2.25rem); }
+  .two { display: grid; grid-template-columns: 1fr 1fr; gap: var(--space-m); }
+  @media (max-width: 40rem) { .two { grid-template-columns: 1fr; } }
+</style>
