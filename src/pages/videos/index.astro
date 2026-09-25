@@ -1,0 +1,95 @@
+---
+import Base from '../../layouts/Base.astro';
+import PageHead from '../../components/PageHead.astro';
+import { getVideos } from '../../lib/content';
+import { courses, site } from '../../data/site';
+import { url, formatDate } from '../../lib/url';
+
+const videos = await getVideos();
+const thumb = (v: (typeof videos)[number]) =>
+  v.data.youtubeId ? `https://i.ytimg.com/vi/${v.data.youtubeId}/hqdefault.jpg` : undefined;
+const topics = [...new Set(courses.map((c) => c.topic))];
+---
+
+<Base title="Video & Courses" description="Video lessons and the course catalog: capital, finance, Excel, sales and facilitation.">
+  <PageHead
+    eyebrow="Video & instruction"
+    title="Lessons you can <em>watch</em>, courses you can book."
+    lede="Short video lessons on capital, lending and financial management, plus the workshops I teach for chambers, lenders, incubators and teams."
+  />
+
+  <section class="section--tight container">
+    <div class="head-row">
+      <h2 class="h2">Videos</h2>
+      {site.social.youtube && <a class="link-arrow" href={site.social.youtube} target="_blank" rel="noopener">YouTube channel →</a>}
+    </div>
+    {videos.length === 0 ? (
+      <div class="empty card">
+        <p class="h3">The video library is being recorded.</p>
+        <p class="muted">First up: short lessons from “Understand Your Underwrite” and “More Than Banks.” Want a topic covered? <a href={url('/contact?topic=video')}>Tell me.</a></p>
+      </div>
+    ) : (
+      <div class="videos">
+        {videos.map((v, i) => (
+          <article class={i === 0 ? 'v lead' : 'v'}>
+            <a href={url(`/videos/${v.id}`)} class="thumb">
+              {thumb(v) ? <img src={thumb(v)} alt="" loading="lazy" width="480" height="360" /> : <span class="ph num">{String(i + 1).padStart(2, '0')}</span>}
+              <span class="play" aria-hidden="true">▶</span>
+            </a>
+            <div class="meta">
+              {v.data.series && <p class="eyebrow">{v.data.series}</p>}
+              <h3 class="h3"><a href={url(`/videos/${v.id}`)}>{v.data.title}</a></h3>
+              <p class="muted">{v.data.description}</p>
+              <p class="small muted">{formatDate(v.data.date)}{v.data.duration && ` · ${v.data.duration}`}</p>
+            </div>
+          </article>
+        ))}
+      </div>
+    )}
+  </section>
+
+  <section class="section container grid-12">
+    <div class="span-12 span-4">
+      <p class="eyebrow">Course catalog</p>
+      <h2 class="h2">Workshops I teach</h2>
+      <p class="muted">Each course runs as a live session, a webinar, or a multi-week series — and can be tailored for your members, clients or staff.</p>
+      <p class="book"><a class="btn" href={url('/contact?topic=workshop')}>Book a workshop <span class="arrow" aria-hidden="true">→</span></a></p>
+    </div>
+    <div class="span-12 span-8">
+      {topics.map((t) => (
+        <div class="topic">
+          <p class="eyebrow">{t}</p>
+          <ul>
+            {courses.filter((c) => c.topic === t).map((c) => (
+              <li><strong>{c.title}</strong><span class="muted">{c.blurb}</span></li>
+            ))}
+          </ul>
+        </div>
+      ))}
+    </div>
+  </section>
+</Base>
+
+<style>
+  .head-row { display: flex; justify-content: space-between; align-items: end; gap: var(--space-m); margin-bottom: var(--space-l); flex-wrap: wrap; }
+  .empty { display: grid; gap: var(--space-xs); max-width: 44rem; }
+  .videos { display: grid; grid-template-columns: repeat(3, 1fr); gap: var(--space-l) var(--gutter); }
+  .v { display: grid; gap: var(--space-s); align-content: start; }
+  .v.lead { grid-column: 1 / -1; grid-template-columns: 7fr 5fr; gap: var(--gutter); align-items: center; }
+  .thumb { position: relative; display: block; aspect-ratio: 16 / 9; overflow: hidden; border-radius: var(--radius-m); background: var(--color-surface-sunken); border: 1px solid var(--color-line); }
+  .thumb img { width: 100%; height: 100%; object-fit: cover; filter: saturate(0.9); transition: transform var(--duration-l) var(--ease-out); }
+  .thumb:hover img { transform: scale(1.03); }
+  .ph { position: absolute; inset: 0; display: grid; place-items: center; font-size: var(--text-3xl); color: var(--color-line-strong); }
+  .play { position: absolute; left: var(--space-s); bottom: var(--space-s); width: 2.75rem; height: 2.75rem; display: grid; place-items: center; border-radius: 50%; background: var(--color-surface); color: var(--color-ink); font-size: 0.8rem; }
+  .meta { display: grid; gap: var(--space-2xs); }
+  .meta h3 a { text-decoration: none; }
+  .small { font-size: var(--text-xs); }
+  @media (max-width: 56rem) { .videos { grid-template-columns: 1fr; } .v.lead { grid-template-columns: 1fr; } }
+
+  .book { margin-top: var(--space-m); }
+  .topic + .topic { margin-top: var(--space-l); }
+  .topic ul { list-style: none; padding: 0; margin: var(--space-xs) 0 0; }
+  .topic li { display: grid; grid-template-columns: minmax(0, 2fr) minmax(0, 3fr); gap: var(--space-m); padding-block: var(--space-s); border-top: 1px solid var(--color-line); font-size: var(--text-sm); }
+  @media (max-width: 40rem) { .topic li { grid-template-columns: 1fr; gap: var(--space-3xs); } }
+  .span-4 { display: grid; gap: var(--space-s); align-content: start; }
+</style>

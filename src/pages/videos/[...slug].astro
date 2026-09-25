@@ -1,0 +1,37 @@
+---
+import { render } from 'astro:content';
+import Base from '../../layouts/Base.astro';
+import VideoEmbed from '../../components/VideoEmbed.astro';
+import { getVideos } from '../../lib/content';
+import { url, formatDate } from '../../lib/url';
+
+export async function getStaticPaths() {
+  const videos = await getVideos();
+  return videos.map((video) => ({ params: { slug: video.id }, props: { video } }));
+}
+
+const { video } = Astro.props;
+const { Content } = await render(video);
+const d = video.data;
+---
+
+<Base title={d.title} description={d.description}>
+  <article class="container wrap">
+    <p class="eyebrow"><a href={url('/videos')}>Video</a>{d.series && ` · ${d.series}`}</p>
+    <h1>{d.title}</h1>
+    <VideoEmbed title={d.title} youtubeId={d.youtubeId} vimeoId={d.vimeoId} videoUrl={d.videoUrl} />
+    <p class="muted small">{formatDate(d.date)}{d.duration && ` · ${d.duration}`}</p>
+    <div class="prose">
+      <p>{d.description}</p>
+      <Content />
+    </div>
+  </article>
+</Base>
+
+<style>
+  .wrap { max-width: 60rem; padding-block: var(--space-xl) var(--space-2xl); display: grid; gap: var(--space-m); }
+  .wrap h1 { font-size: var(--text-3xl); }
+  .eyebrow a { text-decoration: none; }
+  .small { font-size: var(--text-sm); }
+  .prose > p:first-of-type::first-letter { all: unset; }
+</style>

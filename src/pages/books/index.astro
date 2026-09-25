@@ -1,0 +1,65 @@
+---
+import Base from '../../layouts/Base.astro';
+import PageHead from '../../components/PageHead.astro';
+import { getBooks } from '../../lib/content';
+import { url } from '../../lib/url';
+
+const books = await getBooks();
+const statusLabel = { published: 'Available now', 'in-progress': 'In progress', forthcoming: 'Forthcoming' } as const;
+---
+
+<Base title="Books" description="Books and long-form guides by Thomas Credle.">
+  <PageHead
+    eyebrow="Books"
+    title="Long-form, for the <em>long game.</em>"
+    lede="Books and extended guides that go deeper than a workshop allows."
+  />
+
+  <section class="section--tight container">
+    {books.length === 0 ? (
+      <div class="empty grid-12">
+        <div class="span-12 span-7 stack">
+          <p class="h3">The first book is in the works.</p>
+          <p class="muted">Leave your details and I’ll let you know when it’s ready — along with early chapters for readers who want them.</p>
+          <p><a class="btn" href={url('/contact?topic=book')}>Notify me <span class="arrow" aria-hidden="true">→</span></a></p>
+        </div>
+      </div>
+    ) : (
+      <div class="shelf">
+        {books.map((b) => (
+          <article class="book grid-12">
+            <a class="span-12 span-4 cover" href={url(`/books/${b.id}`)} aria-label={b.data.title}>
+              {b.data.cover
+                ? <img src={url(b.data.cover)} alt={`Cover of ${b.data.title}`} loading="lazy" />
+                : <span class="type-cover"><span>{b.data.title}</span><small>Thomas Credle</small></span>}
+            </a>
+            <div class="span-12 span-7 start-6 stack">
+              <span class="tag">{statusLabel[b.data.status]}</span>
+              <h2 class="h2"><a href={url(`/books/${b.id}`)}>{b.data.title}</a></h2>
+              {b.data.subtitle && <p class="sub">{b.data.subtitle}</p>}
+              <p class="muted">{b.data.description}</p>
+              {b.data.links.length > 0 && (
+                <div class="cluster">{b.data.links.map((l) => <a class="btn btn--ghost" href={l.url} target="_blank" rel="noopener">{l.label}</a>)}</div>
+              )}
+            </div>
+          </article>
+        ))}
+      </div>
+    )}
+  </section>
+</Base>
+
+<style>
+  .empty { padding-block: var(--space-l) var(--space-2xl); }
+  .book { padding-block: var(--space-xl); border-top: 1px solid var(--color-line); align-items: center; }
+  .book h2 a { text-decoration: none; }
+  .sub { font-family: var(--font-display); font-style: italic; font-size: var(--text-lg); color: var(--color-ink-soft); }
+  .cover img, .type-cover { aspect-ratio: 2 / 3; width: 100%; max-width: 18rem; box-shadow: var(--shadow-card); border-radius: var(--radius-s); }
+  .type-cover {
+    display: flex; flex-direction: column; justify-content: space-between; padding: var(--space-m);
+    background: linear-gradient(160deg, var(--color-accent), color-mix(in srgb, var(--color-accent) 70%, var(--color-ink)));
+    color: var(--color-accent-ink); font-family: var(--font-display); font-size: var(--text-xl); line-height: 1.1; text-decoration: none;
+  }
+  .type-cover small { font-family: var(--font-body); font-size: var(--text-xs); letter-spacing: var(--tracking-label); text-transform: uppercase; }
+  .cover { text-decoration: none; }
+</style>

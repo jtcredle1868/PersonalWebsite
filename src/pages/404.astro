@@ -1,0 +1,22 @@
+---
+import Base from '../layouts/Base.astro';
+import { url } from '../lib/url';
+---
+
+<Base title="Page not found">
+  <section class="container wrap">
+    <p class="eyebrow">404</p>
+    <h1>This page didn’t <em>underwrite.</em></h1>
+    <p class="lede">The link may be old or mistyped. Try the home page or the latest writing.</p>
+    <div class="cluster">
+      <a class="btn" href={url('/')}>Home</a>
+      <a class="btn btn--ghost" href={url('/writing')}>Writing</a>
+    </div>
+  </section>
+</Base>
+
+<style>
+  .wrap { padding-block: var(--space-2xl); display: grid; gap: var(--space-m); justify-items: start; }
+  h1 { font-size: var(--text-4xl); }
+  h1 em { color: var(--color-accent); }
+</style>

@@ -1,0 +1,36 @@
+---
+import { render } from 'astro:content';
+import Base from '../../layouts/Base.astro';
+import { getBooks } from '../../lib/content';
+import { url } from '../../lib/url';
+
+export async function getStaticPaths() {
+  const books = await getBooks();
+  return books.map((book) => ({ params: { slug: book.id }, props: { book } }));
+}
+
+const { book } = Astro.props;
+const { Content } = await render(book);
+const d = book.data;
+---
+
+<Base title={d.title} description={d.description} image={d.cover}>
+  <article class="container grid-12 wrap">
+    <div class="span-12 span-4">
+      {d.cover && <img class="photo" src={url(d.cover)} alt={`Cover of ${d.title}`} />}
+    </div>
+    <div class="span-12 span-8 stack">
+      <p class="eyebrow"><a href={url('/books')}>Books</a></p>
+      <h1>{d.title}</h1>
+      {d.subtitle && <p class="lede">{d.subtitle}</p>}
+      {d.links.length > 0 && <div class="cluster">{d.links.map((l) => <a class="btn" href={l.url} target="_blank" rel="noopener">{l.label}</a>)}</div>}
+      <div class="prose"><Content /></div>
+    </div>
+  </article>
+</Base>
+
+<style>
+  .wrap { padding-block: var(--space-xl) var(--space-2xl); }
+  h1 { font-size: var(--text-3xl); }
+  .eyebrow a { text-decoration: none; }
+</style>

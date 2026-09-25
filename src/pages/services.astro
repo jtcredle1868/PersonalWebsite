@@ -1,0 +1,87 @@
+---
+import Base from '../layouts/Base.astro';
+import PageHead from '../components/PageHead.astro';
+import { services, testimonials, site } from '../data/site';
+import { url } from '../lib/url';
+
+const process = [
+  { step: 'Listen', text: 'A first conversation about where the business is, where you want it to go and what is in the way.' },
+  { step: 'Diagnose', text: 'I review the numbers, the structure and the market the way a lender or investor would.' },
+  { step: 'Build', text: 'Together we build the plan, the projections, the file or the pitch — and you understand every line of it.' },
+  { step: 'Place & follow through', text: 'Introductions to the right lenders and investors, then ongoing review as the business grows.' },
+];
+---
+
+<Base title="Services" description="Capital strategy, business launch and structure, financial analytics, strategic planning and speaking.">
+  <PageHead
+    eyebrow="Services"
+    title="Advice that reads like a <em>credit memo</em> — and teaches like a class."
+    lede="Every engagement ends with two things: the result you came for, and the understanding to do more of it yourself."
+  />
+
+  <section class="section--tight container">
+    {services.map((s, i) => (
+      <article class="svc grid-12" id={s.id}>
+        <div class="span-12 span-5">
+          <p class="num idx">{String(i + 1).padStart(2, '0')}</p>
+          <h2 class="h2">{s.title}</h2>
+        </div>
+        <div class="span-12 span-7 stack">
+          <p class="lede">{s.summary}</p>
+          <ul>
+            {s.points.map((p) => <li>{p}</li>)}
+          </ul>
+        </div>
+      </article>
+    ))}
+  </section>
+
+  <section class="section process-wrap">
+    <div class="container">
+      <p class="eyebrow">How it works</p>
+      <ol class="process">
+        {process.map((p, i) => (
+          <li>
+            <span class="num">{i + 1}</span>
+            <h3 class="h3">{p.step}</h3>
+            <p class="muted">{p.text}</p>
+          </li>
+        ))}
+      </ol>
+    </div>
+  </section>
+
+  <section class="section container grid-12">
+    <figure class="span-12 span-7 q">
+      <blockquote><p>“{testimonials[3].quote}”</p></blockquote>
+      <figcaption><strong>{testimonials[3].name}</strong> — {testimonials[3].role}</figcaption>
+    </figure>
+    <div class="span-12 span-4 start-9 stack">
+      <p>Engagements are scoped to the need — a single loan-readiness review, a multi-month launch, or a workshop for your team or members.</p>
+      <div class="cluster">
+        <a class="btn" href={url('/contact')}>Discuss your project <span class="arrow" aria-hidden="true">→</span></a>
+        {site.bookingUrl && <a class="btn btn--ghost" href={site.bookingUrl}>Book a call</a>}
+      </div>
+    </div>
+  </section>
+</Base>
+
+<style>
+  .svc { padding-block: var(--space-xl); border-top: 1px solid var(--color-line); scroll-margin-top: 5rem; }
+  .svc:last-child { border-bottom: 1px solid var(--color-line); }
+  .idx { color: var(--color-brass); font-size: var(--text-lg); margin-bottom: var(--space-xs); }
+  .svc ul { list-style: none; padding: 0; margin: var(--space-m) 0 0; display: grid; gap: var(--space-xs); }
+  .svc li { padding: var(--space-xs) 0 var(--space-xs) 1.5rem; border-top: 1px solid var(--color-line); position: relative; }
+  .svc li::before { content: '→'; position: absolute; left: 0; color: var(--color-accent); }
+
+  .process-wrap { background: var(--color-surface-sunken); }
+  .process { list-style: none; padding: 0; margin: var(--space-l) 0 0; display: grid; grid-template-columns: repeat(4, 1fr); gap: var(--space-l); counter-reset: s; }
+  .process li { display: grid; gap: var(--space-2xs); align-content: start; border-top: 2px solid var(--color-ink); padding-top: var(--space-m); }
+  .process .num { font-size: var(--text-3xl); line-height: 1; color: var(--color-brass); }
+  @media (max-width: 56rem) { .process { grid-template-columns: 1fr 1fr; } }
+  @media (max-width: 34rem) { .process { grid-template-columns: 1fr; } }
+
+  .q blockquote { margin: 0; }
+  .q p { font-family: var(--font-display); font-style: italic; font-size: var(--text-2xl); line-height: 1.25; }
+  .q figcaption { margin-top: var(--space-m); font-size: var(--text-sm); }
+</style>
