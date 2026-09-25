@@ -1,0 +1,17 @@
+---
+interface Props { eyebrow: string; title: string; lede?: string }
+const { eyebrow, title, lede } = Astro.props;
+---
+
+<header class="page-head container">
+  <p class="eyebrow reveal" style="--i:0">{eyebrow}</p>
+  <h1 class="reveal" style="--i:1" set:html={title} />
+  {lede && <p class="lede reveal" style="--i:2">{lede}</p>}
+  <slot />
+</header>
+
+<style>
+  .page-head { padding-block: var(--space-xl) var(--space-l); display: grid; gap: var(--space-m); }
+  h1 { font-size: var(--text-4xl); max-width: 16ch; }
+  h1 :global(em) { color: var(--color-accent); font-style: italic; }
+</style>

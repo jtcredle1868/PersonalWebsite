@@ -1,0 +1,87 @@
+---
+import { render } from 'astro:content';
+import Base from '../../layouts/Base.astro';
+import { getWriting, writingTypeLabel, readingTime } from '../../lib/content';
+import { url, formatDate } from '../../lib/url';
+import { site } from '../../data/site';
+
+export async function getStaticPaths() {
+  const posts = (await getWriting()).filter((p) => !p.data.externalUrl);
+  return posts.map((post, i) => ({ params: { slug: post.id }, props: { post, next: posts[i + 1], prev: posts[i - 1] } }));
+}
+
+const { post, next, prev } = Astro.props;
+const { Content } = await render(post);
+const { title, description, date, updated, type, tags, cover, coverAlt } = post.data;
+const shareUrl = new URL(Astro.url.pathname, Astro.site).toString();
+---
+
+<Base title={title} description={description} image={cover} type="article">
+  <article>
+    <header class="container head">
+      <p class="eyebrow reveal" style="--i:0"><a href={url('/writing')}>Writing</a> · {writingTypeLabel[type]}</p>
+      <h1 class="reveal" style="--i:1">{title}</h1>
+      <p class="lede reveal" style="--i:2">{description}</p>
+      <p class="byline reveal" style="--i:3">
+        By {site.name} · <time datetime={date.toISOString()}>{formatDate(date)}</time>
+        {updated && <> · Updated <time datetime={updated.toISOString()}>{formatDate(updated)}</time></>}
+        · {readingTime(post.body)}
+      </p>
+    </header>
+
+    {cover && (
+      <figure class="container cover">
+        <img class="photo" src={url(cover)} alt={coverAlt ?? ''} />
+      </figure>
+    )}
+
+    <div class="container body">
+      <div class="prose">
+        <Content />
+      </div>
+      <aside class="aside">
+        {tags.length > 0 && (
+          <div>
+            <p class="eyebrow">Topics</p>
+            <div class="cluster tags">{tags.map((t) => <span class="tag">{t}</span>)}</div>
+          </div>
+        )}
+        <div>
+          <p class="eyebrow">Share</p>
+          <div class="cluster">
+            <a href={`https://www.linkedin.com/sharing/share-offsite/?url=${encodeURIComponent(shareUrl)}`} target="_blank" rel="noopener">LinkedIn</a>
+            <a href={`mailto:?subject=${encodeURIComponent(title)}&body=${encodeURIComponent(shareUrl)}`}>Email</a>
+          </div>
+        </div>
+        <div class="card">
+          <p><strong>Working on something like this?</strong></p>
+          <p class="muted small">I help owners put these ideas to work.</p>
+          <a class="link-arrow" href={url('/contact')}>Get in touch →</a>
+        </div>
+      </aside>
+    </div>
+
+    <nav class="container pager" aria-label="More writing">
+      {prev ? <a href={url(`/writing/${prev.id}`)}><span class="eyebrow">Newer</span><span class="t">{prev.data.title}</span></a> : <span />}
+      {next ? <a class="r" href={url(`/writing/${next.id}`)}><span class="eyebrow">Older</span><span class="t">{next.data.title}</span></a> : <span />}
+    </nav>
+  </article>
+</Base>
+
+<style>
+  .head { padding-block: var(--space-xl) var(--space-l); display: grid; gap: var(--space-m); max-width: 60rem; margin-inline: auto; }
+  .head h1 { font-size: var(--text-3xl); }
+  .head .eyebrow a { text-decoration: none; }
+  .byline { font-size: var(--text-sm); color: var(--color-muted); }
+  .cover { max-width: 60rem; margin-block: var(--space-m) var(--space-l); padding-right: calc(var(--gutter) + 14px); padding-bottom: 14px; }
+  .body { display: grid; grid-template-columns: minmax(0, 1fr) 15rem; gap: var(--space-xl); max-width: 60rem; padding-bottom: var(--space-xl); }
+  .aside { display: grid; gap: var(--space-l); align-content: start; position: sticky; top: 6rem; font-size: var(--text-sm); }
+  .tags { margin-top: var(--space-xs); }
+  .small { font-size: var(--text-sm); margin-block: var(--space-2xs); }
+  .aside .cluster { margin-top: var(--space-xs); }
+  @media (max-width: 56rem) { .body { grid-template-columns: 1fr; } .aside { position: static; } }
+  .pager { max-width: 60rem; display: grid; grid-template-columns: 1fr 1fr; gap: var(--space-m); padding-block: var(--space-l) var(--space-2xl); border-top: 1px solid var(--color-line); }
+  .pager a { text-decoration: none; display: grid; gap: var(--space-2xs); }
+  .pager .r { text-align: right; justify-items: end; }
+  .pager .t { font-family: var(--font-display); font-size: var(--text-lg); }
+</style>

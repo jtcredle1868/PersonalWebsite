@@ -1,0 +1,70 @@
+---
+import Base from '../../layouts/Base.astro';
+import PageHead from '../../components/PageHead.astro';
+import PostRow from '../../components/PostRow.astro';
+import { getWriting } from '../../lib/content';
+import { url } from '../../lib/url';
+
+const posts = await getWriting();
+const types = [
+  { key: 'all', label: 'All' },
+  { key: 'blog', label: 'Blog' },
+  { key: 'article', label: 'Articles' },
+  { key: 'instruction', label: 'How-to' },
+];
+---
+
+<Base title="Writing" description="Blog posts, articles and how-to guides on capital, lending, financial management and teaching.">
+  <PageHead
+    eyebrow="Writing"
+    title="Field notes from the <em>lending desk</em> and the classroom."
+    lede="Blog posts, longer articles and step-by-step guides. Subscribe with RSS to get new pieces as they publish."
+  >
+    <div class="cluster">
+      <a class="btn btn--ghost" href={url('/rss.xml')}>Subscribe via RSS</a>
+    </div>
+  </PageHead>
+
+  <section class="section--tight container">
+    {posts.length === 0 ? (
+      <p class="muted empty">The first pieces are on their way.</p>
+    ) : (
+      <>
+        <div class="filters" role="group" aria-label="Filter by type">
+          {types.map((t, i) => (
+            <button type="button" data-filter={t.key} aria-pressed={i === 0 ? 'true' : 'false'}>{t.label}</button>
+          ))}
+        </div>
+        <div class="list">
+          {posts.map((p, i) => (
+            <div data-type={p.data.type}><PostRow post={p} index={i} /></div>
+          ))}
+        </div>
+      </>
+    )}
+  </section>
+</Base>
+
+<script>
+  const buttons = document.querySelectorAll<HTMLButtonElement>('[data-filter]');
+  const rows = document.querySelectorAll<HTMLElement>('[data-type]');
+  buttons.forEach((b) =>
+    b.addEventListener('click', () => {
+      const f = b.dataset.filter;
+      buttons.forEach((x) => x.setAttribute('aria-pressed', String(x === b)));
+      rows.forEach((r) => (r.hidden = f !== 'all' && r.dataset.type !== f));
+    }),
+  );
+</script>
+
+<style>
+  .filters { display: flex; flex-wrap: wrap; gap: var(--space-2xs); margin-bottom: var(--space-l); }
+  .filters button {
+    font: inherit; font-size: var(--text-sm); font-weight: var(--weight-semibold);
+    padding: 0.45em 1em; border-radius: 99px; cursor: pointer;
+    background: transparent; color: var(--color-ink-soft); border: 1px solid var(--color-line-strong);
+  }
+  .filters button[aria-pressed='true'] { background: var(--color-ink); color: var(--color-surface); border-color: var(--color-ink); }
+  .list { border-bottom: 1px solid var(--color-line); }
+  .empty { padding-block: var(--space-xl); }
+</style>

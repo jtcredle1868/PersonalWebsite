@@ -1,0 +1,214 @@
+---
+import Base from '../layouts/Base.astro';
+import PostRow from '../components/PostRow.astro';
+import { stats, services, caseStudies, testimonials, site } from '../data/site';
+import { getWriting } from '../lib/content';
+import { url } from '../lib/url';
+
+const posts = (await getWriting()).slice(0, 3);
+const [lead, ...moreQuotes] = testimonials;
+---
+
+<Base>
+  <!-- Hero: asymmetric split, type-led -->
+  <section class="hero container grid-12">
+    <div class="span-12 span-7 hero-copy">
+      <p class="eyebrow reveal" style="--i:0">Capital strategy · Consulting · Teaching</p>
+      <h1 class="display">
+        <span class="reveal" style="--i:1">Twenty years on</span>
+        <span class="reveal" style="--i:2">the lender’s side</span>
+        <span class="reveal" style="--i:3">of the desk.</span>
+        <span class="reveal accent" style="--i:4"><em>Now on yours.</em></span>
+      </h1>
+      <p class="lede reveal" style="--i:5">
+        I’m Thomas Credle — a former commercial banker and CFO who now helps founders and owners raise capital,
+        structure their companies and read their numbers with confidence. I consult, speak, teach and write about
+        the practical side of building a fundable business.
+      </p>
+      <div class="cluster reveal" style="--i:6">
+        <a class="btn" href={url('/services')}>How I can help <span class="arrow" aria-hidden="true">→</span></a>
+        <a class="btn btn--ghost" href={url('/writing')}>Read the latest</a>
+      </div>
+    </div>
+    <figure class="span-12 span-5 hero-photo reveal" style="--i:3">
+      <img class="photo" src={url('/images/panel.jpg')} alt="Thomas Credle speaking on a small-business capital panel" width="458" height="376" />
+      <figcaption>On a small-business capital access panel, Columbus, Georgia.</figcaption>
+    </figure>
+  </section>
+
+  <!-- Ledger -->
+  <section class="ledger-wrap" aria-label="Track record">
+    <div class="container">
+      <dl class="ledger">
+        {stats.map((s) => (
+          <div>
+            <dt class="num">{s.value.replace(/\+$/, '')}{s.value.endsWith('+') && <span class="plus">+</span>}</dt>
+            <dd>{s.label}</dd>
+          </div>
+        ))}
+      </dl>
+    </div>
+  </section>
+
+  <!-- Services -->
+  <section class="section container grid-12">
+    <div class="span-12 span-4 sticky">
+      <p class="eyebrow">What I do</p>
+      <h2 class="h2">Practical help for the moments that <em class="italic">decide</em> a business.</h2>
+      <p class="muted">Raising money, launching, restructuring, planning — the decisions where a banker’s eye and a teacher’s patience pay off.</p>
+    </div>
+    <ol class="span-12 span-8 services">
+      {services.map((s, i) => (
+        <li>
+          <span class="num idx">{String(i + 1).padStart(2, '0')}</span>
+          <div>
+            <h3 class="h3">{s.title}</h3>
+            <p class="muted">{s.summary}</p>
+          </div>
+          <a class="link-arrow" href={url(`/services#${s.id}`)} aria-label={`More about ${s.title}`}>Details →</a>
+        </li>
+      ))}
+    </ol>
+  </section>
+
+  <!-- Selected work -->
+  <section class="section work">
+    <div class="container">
+      <div class="head">
+        <p class="eyebrow">Selected engagements</p>
+        <h2 class="h2">The work, in plain numbers.</h2>
+      </div>
+      <div class="cases">
+        {caseStudies.map((c) => (
+          <article class="case">
+            <p class="outcome num">{c.outcome}</p>
+            <h3 class="h3">{c.client}</h3>
+            <p class="sector">{c.sector}</p>
+            <p class="muted">{c.body}</p>
+          </article>
+        ))}
+      </div>
+    </div>
+  </section>
+
+  <!-- Testimonial -->
+  <section class="section container grid-12 quote-block">
+    <figure class="span-12 span-8">
+      <blockquote>
+        <p>“{lead.quote}”</p>
+      </blockquote>
+      <figcaption><strong>{lead.name}</strong> — {lead.role}</figcaption>
+    </figure>
+    <aside class="span-12 span-4 minor">
+      {moreQuotes.slice(0, 2).map((q) => (
+        <figure>
+          <blockquote><p>“{q.quote}”</p></blockquote>
+          <figcaption><strong>{q.name}</strong> — {q.role}</figcaption>
+        </figure>
+      ))}
+    </aside>
+  </section>
+
+  <!-- Speaking band -->
+  <section class="band" aria-labelledby="speaking-band">
+    <img src={url('/images/audience.jpg')} alt="" width="1080" height="608" loading="lazy" />
+    <div class="container band-inner">
+      <p class="eyebrow">Speaking</p>
+      <h2 id="speaking-band" class="h2">Three-time national presenter at America’s SBDC — and a keynote regular across Georgia and Alabama.</h2>
+      <a class="btn" href={url('/speaking')}>Topics & past talks <span class="arrow" aria-hidden="true">→</span></a>
+    </div>
+  </section>
+
+  <!-- Writing -->
+  {posts.length > 0 && (
+    <section class="section container">
+      <div class="head-row">
+        <div>
+          <p class="eyebrow">Writing</p>
+          <h2 class="h2">Notes on capital, finance & teaching.</h2>
+        </div>
+        <a class="link-arrow" href={url('/writing')}>All writing →</a>
+      </div>
+      <div class="posts">
+        {posts.map((p, i) => <PostRow post={p} index={i} />)}
+      </div>
+    </section>
+  )}
+
+  <!-- Closing -->
+  <section class="section container grid-12 closing">
+    <h2 class="span-12 span-7 h2">Have a deal to finance, a business to launch, or a room to <em class="italic">teach?</em></h2>
+    <div class="span-12 span-5 stack">
+      <p class="lede">Tell me where you are and where you want to be. I’ll tell you honestly how I can help — or who can.</p>
+      <div class="cluster">
+        <a class="btn" href={url('/contact')}>Start a conversation <span class="arrow" aria-hidden="true">→</span></a>
+        {site.bookingUrl && <a class="btn btn--ghost" href={site.bookingUrl}>Book a call</a>}
+      </div>
+    </div>
+  </section>
+</Base>
+
+<style>
+  .hero { padding-block: var(--space-xl) var(--space-2xl); align-items: end; }
+  .hero-copy { display: grid; gap: var(--space-m); }
+  .display span { display: block; }
+  .display .accent em { color: var(--color-accent); font-style: italic; font-variation-settings: 'opsz' 144, 'SOFT' 100; }
+  .hero-photo { padding-right: 14px; padding-bottom: 14px; }
+  .hero-photo img { aspect-ratio: 5 / 4; }
+
+  .ledger-wrap { border-block: 1px solid var(--color-line); background: linear-gradient(180deg, var(--color-surface-raised), var(--color-surface)); }
+  .ledger { display: grid; grid-template-columns: repeat(4, 1fr); margin: 0; }
+  .ledger > div { padding: var(--space-l) var(--space-m); border-left: 1px solid var(--color-line); display: grid; gap: var(--space-2xs); align-content: start; }
+  .ledger > div:first-child { border-left: 0; padding-left: 0; }
+  .ledger dt { font-size: var(--text-3xl); line-height: 1; color: var(--color-ink); letter-spacing: -0.03em; }
+  .ledger .plus { font-family: var(--font-body); font-weight: var(--weight-regular); font-size: 0.55em; vertical-align: 0.55em; margin-left: 0.05em; color: var(--color-brass); }
+  .ledger dd { margin: 0; font-size: var(--text-sm); color: var(--color-muted); max-width: 22ch; }
+  @media (max-width: 48rem) {
+    .ledger { grid-template-columns: 1fr 1fr; }
+    .ledger > div { padding: var(--space-m) var(--space-s); }
+    .ledger > div:nth-child(odd) { border-left: 0; padding-left: 0; }
+    .ledger > div:nth-child(n + 3) { border-top: 1px solid var(--color-line); }
+  }
+
+  .sticky { display: grid; gap: var(--space-m); align-content: start; }
+  @media (min-width: 60rem) { .sticky { position: sticky; top: 6rem; align-self: start; } }
+  .h2 em { color: var(--color-accent); }
+  .services { list-style: none; margin: 0; padding: 0; }
+  .services li { display: grid; grid-template-columns: 3rem 1fr auto; gap: var(--space-m); padding-block: var(--space-l); border-top: 1px solid var(--color-line); align-items: baseline; }
+  .services li:last-child { border-bottom: 1px solid var(--color-line); }
+  .services li > div { display: grid; gap: var(--space-2xs); }
+  .idx { color: var(--color-brass); font-size: var(--text-lg); }
+  @media (max-width: 40rem) { .services li { grid-template-columns: 2.25rem 1fr; } .services .link-arrow { grid-column: 2; } }
+
+  .work { background: var(--color-surface-sunken); }
+  .head { display: grid; gap: var(--space-s); margin-bottom: var(--space-xl); max-width: 40rem; }
+  .cases { display: grid; grid-template-columns: repeat(2, 1fr); gap: 0; border-top: 1px solid var(--color-line-strong); }
+  .case { padding: var(--space-l) var(--space-l) var(--space-l) 0; display: grid; gap: var(--space-2xs); align-content: start; border-bottom: 1px solid var(--color-line); }
+  .case:nth-child(even) { padding-left: var(--space-l); border-left: 1px solid var(--color-line); padding-right: 0; }
+  .outcome { color: var(--color-accent); font-size: var(--text-xl); }
+  .sector { font-size: var(--text-xs); letter-spacing: var(--tracking-label); text-transform: uppercase; color: var(--color-muted); }
+  @media (max-width: 48rem) { .cases { grid-template-columns: 1fr; } .case, .case:nth-child(even) { padding: var(--space-m) 0; border-left: 0; } }
+
+  .quote-block blockquote { margin: 0; }
+  .quote-block .span-8 blockquote p { font-family: var(--font-display); font-size: var(--text-2xl); line-height: 1.25; letter-spacing: -0.015em; font-style: italic; }
+  .quote-block figcaption { font-size: var(--text-sm); margin-top: var(--space-m); }
+  .minor { display: grid; gap: var(--space-l); align-content: start; }
+  .minor figure { border-top: 1px solid var(--color-line); padding-top: var(--space-m); }
+  .minor blockquote p { font-size: var(--text-base); color: var(--color-ink-soft); }
+  .minor figcaption { margin-top: var(--space-xs); }
+
+  .band { position: relative; isolation: isolate; overflow: hidden; color: var(--color-on-photo); }
+  .band img { position: absolute; inset: 0; width: 100%; height: 100%; object-fit: cover; z-index: -2; filter: grayscale(0.6) contrast(1.05); }
+  .band::before { content: ''; position: absolute; inset: 0; z-index: -1; background: linear-gradient(100deg, rgb(var(--color-photo-scrim) / 0.94) 0%, rgb(var(--color-photo-scrim) / 0.82) 45%, rgb(var(--color-photo-scrim) / 0.45) 100%); }
+  .band-inner { padding-block: var(--space-2xl); display: grid; gap: var(--space-m); justify-items: start; }
+  .band-inner h2 { max-width: 22ch; }
+  .band .eyebrow { color: var(--color-on-photo-muted); }
+  .band .btn { background: var(--color-on-photo); color: rgb(var(--color-photo-scrim)); border-color: var(--color-on-photo); }
+  .band .btn:hover { background: transparent; color: var(--color-on-photo); }
+
+  .head-row { display: flex; justify-content: space-between; align-items: end; gap: var(--space-m); flex-wrap: wrap; margin-bottom: var(--space-l); }
+  .head-row > div { display: grid; gap: var(--space-s); }
+  .posts { border-bottom: 1px solid var(--color-line); }
+
+  .closing { align-items: end; }
+</style>

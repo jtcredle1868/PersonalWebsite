@@ -1,0 +1,116 @@
+---
+import Base from '../layouts/Base.astro';
+import PageHead from '../components/PageHead.astro';
+import { experience, education, certifications, awards, advisory, expertise } from '../data/site';
+import { url } from '../lib/url';
+---
+
+<Base title="About" description="Former commercial banker and CFO turned consultant, speaker and educator. Background, experience, education and recognition.">
+  <PageHead
+    eyebrow="About"
+    title="Banker by training. <em>Teacher</em> by temperament."
+    lede="I spent two decades inside banks, credit unions and a hotel development company learning exactly how capital decisions get made. Today I use that inside view to help owners get to yes — and to understand why."
+  />
+
+  <section class="section--tight container grid-12">
+    <div class="span-12 span-7 prose">
+      <p>
+        My career started in the Management Associate program at Columbus Bank &amp; Trust. From there I worked as a
+        credit analyst, securitization analyst and business analyst, then spent six years building real estate and
+        member business lending at Kinetic Credit Union. I’ve been a CFO for a multi-state hotel developer — where the
+        capital ranged from bank debt to mezzanine, private equity and municipal bonds — and the senior commercial
+        lender for a bank’s Columbus market.
+      </p>
+      <p>
+        Since 2020 I’ve been a business consultant with the University of Georgia Small Business Development Center in
+        Columbus, where I’ve worked with more than 380 businesses, helped launch 70 of them and helped clients place
+        over $20 million in capital. In 2023 I received the Flewellen Award for Consulting Excellence, ranking first
+        statewide that year in business starts, long-term clients and consulting hours.
+      </p>
+      <p>
+        I also teach — Principles of Accounting at Chattahoochee Valley Community College, more than a dozen
+        continuing-education courses, and sessions for other consultants and instructors on facilitation and access to
+        capital. My undergraduate degree is in psychology, which turns out to be very useful for understanding how
+        lenders, investors, customers and students make decisions.
+      </p>
+      <p>
+        I live in the Columbus, Georgia / Phenix City, Alabama area and serve on several advisory groups working to
+        improve small-business access to capital in the region.
+      </p>
+    </div>
+    <aside class="span-12 span-4 start-9 side">
+      <figure>
+        <img class="photo" src={url('/images/flewellen-award.jpg')} alt="Thomas Credle receiving the 2023 Flewellen Award for Consulting Excellence" width="316" height="202" loading="lazy" />
+        <figcaption>Receiving the 2023 Flewellen Award for Consulting Excellence.</figcaption>
+      </figure>
+      <div>
+        <p class="eyebrow">Areas of expertise</p>
+        <ul class="plain">
+          {expertise.map((e) => <li>{e}</li>)}
+        </ul>
+      </div>
+    </aside>
+  </section>
+
+  <section class="section container grid-12">
+    <div class="span-12 span-3">
+      <p class="eyebrow">Experience</p>
+      <h2 class="h2">Career</h2>
+    </div>
+    <ol class="span-12 span-9 timeline">
+      {experience.map((x) => (
+        <li>
+          <p class="period num">{x.period}</p>
+          <div>
+            <h3 class="h3">{x.role}</h3>
+            <p class="org">{x.org}</p>
+            <p class="muted">{x.detail}</p>
+          </div>
+        </li>
+      ))}
+    </ol>
+  </section>
+
+  <section class="section container grid-12">
+    <div class="span-12 span-4 stack-l">
+      <div>
+        <p class="eyebrow">Education</p>
+        <ul class="plain spaced">
+          {education.map((e) => <li><strong>{e.degree}</strong><br /><span class="muted">{e.school} · {e.note}</span></li>)}
+        </ul>
+      </div>
+      <div>
+        <p class="eyebrow">Certifications</p>
+        <ul class="plain">{certifications.map((c) => <li>{c}</li>)}</ul>
+      </div>
+    </div>
+    <div class="span-12 span-4">
+      <p class="eyebrow">Recognition</p>
+      <ul class="plain spaced">
+        {awards.map((a) => <li><span class="num yr">{a.year}</span> <strong>{a.title}</strong><br /><span class="muted">{a.org}</span></li>)}
+      </ul>
+    </div>
+    <div class="span-12 span-4">
+      <p class="eyebrow">Advisory & civic service</p>
+      <ul class="plain spaced">{advisory.map((a) => <li>{a}</li>)}</ul>
+      <p class="cv-cta"><a class="btn btn--ghost" href={url('/contact')}>Request a full CV</a></p>
+    </div>
+  </section>
+</Base>
+
+<style>
+  .side { display: grid; gap: var(--space-l); align-content: start; }
+  .side figure { padding: 0 14px 14px 0; }
+  .plain { list-style: none; padding: 0; margin: var(--space-s) 0 0; display: grid; gap: var(--space-2xs); font-size: var(--text-sm); }
+  .plain li { padding-left: 1rem; position: relative; }
+  .plain li::before { content: ''; position: absolute; left: 0; top: 0.7em; width: 0.45rem; height: 1px; background: var(--color-brass); }
+  .spaced { gap: var(--space-s); }
+  .yr { color: var(--color-brass); }
+  .timeline { list-style: none; margin: 0; padding: 0; }
+  .timeline li { display: grid; grid-template-columns: 10rem 1fr; gap: var(--space-m); padding-block: var(--space-m); border-top: 1px solid var(--color-line); }
+  .timeline li > div { display: grid; gap: var(--space-3xs); }
+  .period { color: var(--color-brass); font-size: var(--text-base); }
+  .org { font-weight: var(--weight-semibold); font-size: var(--text-sm); }
+  @media (max-width: 40rem) { .timeline li { grid-template-columns: 1fr; gap: var(--space-2xs); } }
+  .cv-cta { margin-top: var(--space-l); }
+</style>

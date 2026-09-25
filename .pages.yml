@@ -1,0 +1,93 @@
+# Pages CMS (https://pagescms.org) — edit this site in the browser.
+# Sign in at https://app.pagescms.org with GitHub and open this repository.
+media:
+  input: public/images
+  output: /images
+
+content:
+  - name: writing
+    label: Writing (blog, articles, how-to)
+    type: collection
+    path: src/content/writing
+    filename: '{primary}.md'
+    view:
+      fields: [title, type, date, draft]
+      primary: title
+      sort: [date]
+      default:
+        sort: date
+        order: desc
+    fields:
+      - { name: title, label: Title, type: string, required: true }
+      - { name: description, label: Summary (shown in lists and search), type: text, required: true }
+      - { name: date, label: Publish date, type: date, required: true }
+      - name: type
+        label: Type
+        type: select
+        default: blog
+        options:
+          values:
+            - { value: blog, label: Blog post }
+            - { value: article, label: Article }
+            - { value: instruction, label: How-to / instruction }
+      - { name: tags, label: Topics, type: string, list: true }
+      - { name: cover, label: Cover image, type: image }
+      - { name: coverAlt, label: Cover image description, type: string }
+      - { name: externalUrl, label: 'External link (optional — link out instead of hosting here)', type: string }
+      - { name: featured, label: Featured, type: boolean, default: false }
+      - { name: draft, label: Draft (hidden from the live site), type: boolean, default: false }
+      - { name: body, label: Body, type: rich-text }
+
+  - name: videos
+    label: Videos
+    type: collection
+    path: src/content/videos
+    filename: '{primary}.md'
+    view:
+      fields: [title, series, date, draft]
+      primary: title
+    fields:
+      - { name: title, label: Title, type: string, required: true }
+      - { name: description, label: Description, type: text, required: true }
+      - { name: date, label: Date, type: date, required: true }
+      - { name: youtubeId, label: 'YouTube video ID (the part after v= in the link)', type: string }
+      - { name: vimeoId, label: Vimeo video ID, type: string }
+      - { name: videoUrl, label: Direct video file URL, type: string }
+      - { name: duration, label: 'Duration (e.g. 8 min)', type: string }
+      - { name: series, label: Series / course, type: string }
+      - { name: tags, label: Topics, type: string, list: true }
+      - { name: draft, label: Draft, type: boolean, default: false }
+      - { name: body, label: Notes / transcript, type: rich-text }
+
+  - name: books
+    label: Books
+    type: collection
+    path: src/content/books
+    filename: '{primary}.md'
+    view:
+      fields: [title, status, draft]
+      primary: title
+    fields:
+      - { name: title, label: Title, type: string, required: true }
+      - { name: subtitle, label: Subtitle, type: string }
+      - { name: description, label: Short description, type: text, required: true }
+      - { name: date, label: Publication date, type: date, required: true }
+      - name: status
+        label: Status
+        type: select
+        default: in-progress
+        options:
+          values:
+            - { value: published, label: Available now }
+            - { value: in-progress, label: In progress }
+            - { value: forthcoming, label: Forthcoming }
+      - { name: cover, label: Cover image, type: image }
+      - name: links
+        label: Buy / download links
+        type: object
+        list: true
+        fields:
+          - { name: label, label: Button label, type: string }
+          - { name: url, label: URL, type: string }
+      - { name: draft, label: Draft, type: boolean, default: false }
+      - { name: body, label: Full description / sample chapter, type: rich-text }

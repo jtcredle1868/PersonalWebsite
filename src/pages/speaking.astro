@@ -1,0 +1,97 @@
+---
+import Base from '../layouts/Base.astro';
+import PageHead from '../components/PageHead.astro';
+import { talks } from '../data/site';
+import { url } from '../lib/url';
+
+const topics = [
+  { title: 'More Than Banks: Alternative Access to Capital', text: 'Credit unions, CDFIs, development authorities, fintech, peer-to-peer lending, crowdfunding and private equity — and when each one fits.' },
+  { title: 'Understand Your Underwrite', text: 'How lenders actually analyze a commercial loan, and what owners and realtors can do before the application to get approved.' },
+  { title: 'The Big Three & Your Business', text: 'Reading the income statement, balance sheet and cash-flow statement — and turning them into better decisions.' },
+  { title: 'Sales Is a Process', text: 'The psychology of motivation applied to sales management: conditioning, incentives, archetypes and metrics.' },
+  { title: 'Facilitation That Engages', text: 'For instructors and trainers: listening, observing, attending and questioning techniques that turn a lecture into a discussion.' },
+  { title: 'AI and the Small Business', text: 'What artificial intelligence changes for small-business finance and operations — and what it doesn’t.' },
+];
+---
+
+<Base title="Speaking" description="Keynotes, breakouts, panels and workshops on access to capital, financial statements, sales management and facilitation.">
+  <PageHead
+    eyebrow="Speaking & workshops"
+    title="Talks on <em>money</em>, method and management."
+    lede="I speak to entrepreneurs, lenders, realtors, chambers, incubators and fellow educators — always practical, always ending with a facilitated discussion so the room leaves with something to use on Monday."
+  >
+    <div class="cluster"><a class="btn" href={url('/contact?topic=speaking')}>Invite me to speak <span class="arrow" aria-hidden="true">→</span></a></div>
+  </PageHead>
+
+  <section class="section--tight container grid-12 photos">
+    <figure class="span-12 span-7">
+      <img class="photo" src={url('/images/keynote-room.jpg')} alt="A packed conference room during one of Thomas’s breakout sessions" width="669" height="490" loading="lazy" />
+      <figcaption>A full breakout room.</figcaption>
+    </figure>
+    <figure class="span-12 span-5 offset">
+      <img class="photo" src={url('/images/bizpitch-winner.jpg')} alt="A Start UP Columbus BizPitch winner holding a prize check on stage" width="763" height="494" loading="lazy" />
+      <figcaption>Start UP Columbus BizPitch — several winners and finalists came through the pitch boot camp.</figcaption>
+    </figure>
+  </section>
+
+  <section class="section container">
+    <p class="eyebrow">Signature topics</p>
+    <div class="topics">
+      {topics.map((t) => (
+        <article>
+          <h2 class="h3">{t.title}</h2>
+          <p class="muted">{t.text}</p>
+        </article>
+      ))}
+    </div>
+  </section>
+
+  <section class="section container grid-12">
+    <div class="span-12 span-3">
+      <p class="eyebrow">Record</p>
+      <h2 class="h2">Selected talks</h2>
+    </div>
+    <div class="span-12 span-9">
+      <table class="talks">
+        <thead>
+          <tr><th scope="col">Year</th><th scope="col">Session</th><th scope="col">Format</th></tr>
+        </thead>
+        <tbody>
+          {talks.map((t) => (
+            <tr>
+              <td class="num">{t.year}</td>
+              <td><strong>{t.title}</strong><br /><span class="muted">{t.venue}</span></td>
+              <td><span class="tag">{t.format}</span></td>
+            </tr>
+          ))}
+        </tbody>
+      </table>
+    </div>
+  </section>
+</Base>
+
+<style>
+  .photos { align-items: end; }
+  .photos figure { padding: 0 14px 14px 0; }
+  .offset { margin-bottom: var(--space-xl); }
+  @media (max-width: 59.99rem) { .offset { margin-bottom: 0; } }
+
+  .topics { display: grid; grid-template-columns: repeat(3, 1fr); margin-top: var(--space-l); border-top: 1px solid var(--color-line-strong); }
+  .topics article { padding: var(--space-l) var(--space-m) var(--space-l) 0; display: grid; gap: var(--space-xs); align-content: start; border-bottom: 1px solid var(--color-line); }
+  .topics article:not(:nth-child(3n + 1)) { padding-left: var(--space-m); border-left: 1px solid var(--color-line); }
+  @media (max-width: 56rem) {
+    .topics { grid-template-columns: 1fr; }
+    .topics article, .topics article:not(:nth-child(3n + 1)) { padding: var(--space-m) 0; border-left: 0; }
+  }
+
+  .talks { width: 100%; border-collapse: collapse; }
+  .talks th { text-align: left; font-size: var(--text-xs); letter-spacing: var(--tracking-label); text-transform: uppercase; color: var(--color-muted); font-weight: var(--weight-semibold); padding: 0 var(--space-s) var(--space-xs) 0; border-bottom: 1px solid var(--color-line-strong); }
+  .talks td { padding: var(--space-s) var(--space-s) var(--space-s) 0; border-bottom: 1px solid var(--color-line); vertical-align: top; font-size: var(--text-sm); }
+  .talks td.num { color: var(--color-brass); font-size: var(--text-base); }
+  @media (max-width: 40rem) {
+    .talks thead { display: none; }
+    .talks tr { display: grid; grid-template-columns: 3.5rem 1fr; border-bottom: 1px solid var(--color-line); padding-block: var(--space-xs); }
+    .talks td { border: 0; padding: var(--space-3xs) 0; }
+    .talks td:last-child { grid-column: 2; }
+  }
+</style>

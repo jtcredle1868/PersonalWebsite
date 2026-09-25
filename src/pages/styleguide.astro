@@ -1,0 +1,66 @@
+---
+import Base from '../layouts/Base.astro';
+
+const colors = ['surface', 'surface-raised', 'surface-sunken', 'ink', 'ink-soft', 'muted', 'line', 'line-strong', 'accent', 'accent-soft', 'brass'];
+const sizes = ['4xl', '3xl', '2xl', 'xl', 'lg', 'base', 'sm', 'xs'];
+---
+
+<Base title="Style guide" description="Design tokens and components for this site.">
+  <div class="container wrap">
+    <p class="eyebrow">Style guide</p>
+    <h1 class="h2">Design system</h1>
+    <p class="muted">Every color, size and component on the site comes from <code>src/styles/tokens.css</code>. Use the footer toggle to preview dark mode.</p>
+
+    <h2 class="h3">Color</h2>
+    <div class="swatches">
+      {colors.map((c) => (
+        <div class="sw"><span style={`background: var(--color-${c})`}></span><code>--color-{c}</code></div>
+      ))}
+    </div>
+
+    <h2 class="h3">Type — Fraunces (display) + Manrope (body)</h2>
+    <div class="ramp">
+      {sizes.map((s) => (
+        <p style={`font-size: var(--text-${s}); font-family: ${['4xl', '3xl', '2xl', 'xl'].includes(s) ? 'var(--font-display)' : 'var(--font-body)'}`}>
+          <code>--text-{s}</code> Capital follows clarity.
+        </p>
+      ))}
+      <p class="eyebrow">Eyebrow label</p>
+      <p class="num" style="font-size: var(--text-3xl)">$20,104,500</p>
+    </div>
+
+    <h2 class="h3">Buttons & tags</h2>
+    <div class="cluster">
+      <a class="btn" href="#">Primary <span class="arrow">→</span></a>
+      <a class="btn btn--ghost" href="#">Ghost</a>
+      <a class="link-arrow" href="#">Text link →</a>
+      <span class="tag">Article</span>
+    </div>
+
+    <h2 class="h3">Form fields</h2>
+    <div class="form">
+      <div class="field"><label for="sg1">Label</label><input id="sg1" placeholder="Placeholder" /></div>
+      <div class="field"><label for="sg2">Select</label><select id="sg2"><option>Option</option></select></div>
+    </div>
+
+    <h2 class="h3">Card</h2>
+    <div class="card" style="max-width: 28rem"><p><strong>Card title</strong></p><p class="muted">Raised surface with hairline border and soft shadow.</p></div>
+
+    <h2 class="h3">Prose</h2>
+    <div class="prose">
+      <p>Body copy is set at a comfortable measure with a drop cap on the first paragraph of every article.</p>
+      <blockquote>Pull quotes use the display face in italic.</blockquote>
+      <ul><li>List markers are brass.</li><li>Tables and code are styled too.</li></ul>
+    </div>
+  </div>
+</Base>
+
+<style>
+  .wrap { padding-block: var(--space-xl) var(--space-2xl); display: grid; gap: var(--space-l); }
+  .swatches { display: grid; grid-template-columns: repeat(auto-fill, minmax(9rem, 1fr)); gap: var(--space-s); }
+  .sw { display: grid; gap: var(--space-2xs); font-size: var(--text-xs); }
+  .sw span { height: 4rem; border: 1px solid var(--color-line); border-radius: var(--radius-s); }
+  .ramp { display: grid; gap: var(--space-xs); }
+  .ramp code { font-size: var(--text-xs); color: var(--color-muted); margin-right: var(--space-s); font-family: var(--font-mono); }
+  .form { display: grid; gap: var(--space-s); max-width: 28rem; }
+</style>

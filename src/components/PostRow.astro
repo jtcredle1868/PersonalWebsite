@@ -1,0 +1,45 @@
+---
+import type { CollectionEntry } from 'astro:content';
+import { url, formatDate } from '../lib/url';
+import { writingTypeLabel, readingTime } from '../lib/content';
+
+interface Props { post: CollectionEntry<'writing'>; index?: number }
+const { post, index } = Astro.props;
+const href = post.data.externalUrl ?? url(`/writing/${post.id}`);
+const external = Boolean(post.data.externalUrl);
+---
+
+<article class="row">
+  {index !== undefined && <span class="idx num" aria-hidden="true">{String(index + 1).padStart(2, '0')}</span>}
+  <div class="meta">
+    <span class="tag">{writingTypeLabel[post.data.type]}</span>
+    <time datetime={post.data.date.toISOString()}>{formatDate(post.data.date)}</time>
+  </div>
+  <div class="body">
+    <h3><a href={href} target={external ? '_blank' : undefined} rel={external ? 'noopener' : undefined}>{post.data.title}{external && ' ↗'}</a></h3>
+    <p class="muted">{post.data.description}</p>
+  </div>
+  <span class="rt muted">{external ? 'External' : readingTime(post.body)}</span>
+</article>
+
+<style>
+  .row {
+    display: grid; grid-template-columns: 3rem 10rem 1fr 6rem; gap: var(--space-m); align-items: baseline;
+    padding-block: var(--space-m); border-top: 1px solid var(--color-line);
+    position: relative;
+  }
+  .idx { color: var(--color-brass); font-size: var(--text-lg); }
+  .meta { display: grid; gap: var(--space-2xs); justify-items: start; font-size: var(--text-xs); color: var(--color-muted); }
+  h3 { font-size: var(--text-xl); }
+  h3 a { text-decoration: none; }
+  h3 a::after { content: ''; position: absolute; inset: 0; }
+  .row:hover h3 a { color: var(--color-accent); }
+  .body { display: grid; gap: var(--space-2xs); }
+  .body p { max-width: 60ch; }
+  .rt { font-size: var(--text-xs); text-align: right; }
+  @media (max-width: 48rem) {
+    .row { grid-template-columns: 1fr; gap: var(--space-xs); }
+    .idx, .rt { display: none; }
+    .meta { grid-auto-flow: column; justify-content: start; align-items: center; gap: var(--space-xs); }
+  }
+</style>
