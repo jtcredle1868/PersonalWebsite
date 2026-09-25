@@ -5,7 +5,7 @@ import { writingTypeLabel, readingTime } from '../lib/content';
 
 interface Props { post: CollectionEntry<'writing'>; index?: number }
 const { post, index } = Astro.props;
-const href = post.data.externalUrl ?? url(`/writing/${post.id}`);
+const href = post.data.externalUrl ?? url(`/blog/${post.id}`);
 const external = Boolean(post.data.externalUrl);
 ---
 

@@ -19,7 +19,7 @@ const shareUrl = new URL(Astro.url.pathname, Astro.site).toString();
 <Base title={title} description={description} image={cover} type="article">
   <article>
     <header class="container head">
-      <p class="eyebrow reveal" style="--i:0"><a href={url('/writing')}>Writing</a> · {writingTypeLabel[type]}</p>
+      <p class="eyebrow reveal" style="--i:0"><a href={url('/blog')}>Blog</a> · {writingTypeLabel[type]}</p>
       <h1 class="reveal" style="--i:1">{title}</h1>
       <p class="lede reveal" style="--i:2">{description}</p>
       <p class="byline reveal" style="--i:3">
@@ -61,9 +61,9 @@ const shareUrl = new URL(Astro.url.pathname, Astro.site).toString();
       </aside>
     </div>
 
-    <nav class="container pager" aria-label="More writing">
-      {prev ? <a href={url(`/writing/${prev.id}`)}><span class="eyebrow">Newer</span><span class="t">{prev.data.title}</span></a> : <span />}
-      {next ? <a class="r" href={url(`/writing/${next.id}`)}><span class="eyebrow">Older</span><span class="t">{next.data.title}</span></a> : <span />}
+    <nav class="container pager" aria-label="More posts">
+      {prev ? <a href={url(`/blog/${prev.id}`)}><span class="eyebrow">Newer</span><span class="t">{prev.data.title}</span></a> : <span />}
+      {next ? <a class="r" href={url(`/blog/${next.id}`)}><span class="eyebrow">Older</span><span class="t">{next.data.title}</span></a> : <span />}
     </nav>
   </article>
 </Base>

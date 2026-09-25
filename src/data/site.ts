@@ -11,9 +11,11 @@ export const site = {
   description:
     'Thomas Credle helps founders and owners raise capital, structure their businesses and make better financial decisions. Consultant, speaker, and educator based in Columbus, Georgia.',
   location: 'Columbus, GA · Phenix City, AL',
-  // EDIT: add a public contact email to enable the mailto fallback on /contact.
-  email: '',
-  // EDIT: paste a Formspree (https://formspree.io) form endpoint, e.g. https://formspree.io/f/abcdwxyz
+  url: 'https://john-thomas-credle.com',
+  email: 'info@john-thomas-credle.com',
+  // Contact-form delivery. Leave empty to use FormSubmit (https://formsubmit.co), which emails
+  // submissions to `email` above — the first submission sends a one-time activation link to that inbox.
+  // To use Formspree instead, paste its endpoint, e.g. https://formspree.io/f/abcdwxyz
   formEndpoint: '',
   // EDIT: paste a booking link (Calendly, Cal.com, Microsoft Bookings) to show a "Book a call" button.
   bookingUrl: '',
@@ -29,7 +31,7 @@ export const nav = [
   { label: 'About', href: '/about' },
   { label: 'Services', href: '/services' },
   { label: 'Speaking', href: '/speaking' },
-  { label: 'Writing', href: '/writing' },
+  { label: 'Blog', href: '/blog' },
   { label: 'Video & Courses', href: '/videos' },
   { label: 'Books', href: '/books' },
 ];

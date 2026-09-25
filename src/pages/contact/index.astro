@@ -1,0 +1,160 @@
+---
+import Base from '../../layouts/Base.astro';
+import PageHead from '../../components/PageHead.astro';
+import { site } from '../../data/site';
+import { url } from '../../lib/url';
+
+// Formspree if configured; otherwise FormSubmit emails submissions straight to site.email.
+const usesFormSubmit = !site.formEndpoint;
+const action = site.formEndpoint || `https://formsubmit.co/${site.email}`;
+const thanksUrl = new URL(url('/contact/thanks'), Astro.site).toString();
+
+const topics = [
+  { value: 'Consulting', label: 'Consulting — capital, launch or finance' },
+  { value: 'Speaking', label: 'Speaking or keynote' },
+  { value: 'Workshop', label: 'Workshop or training for a group' },
+  { value: 'Books', label: 'Books — notify me' },
+  { value: 'Video', label: 'Video lesson request' },
+  { value: 'Media / partnership', label: 'Media or partnership' },
+  { value: 'Other', label: 'Something else' },
+];
+const topicKeys: Record<string, string> = { consulting: 'Consulting', speaking: 'Speaking', workshop: 'Workshop', book: 'Books', video: 'Video', media: 'Media / partnership' };
+const platforms = ['LinkedIn', 'Facebook', 'Instagram', 'X (Twitter)', 'YouTube', 'TikTok', 'Other'];
+---
+
+<Base title="Contact" description="Send a message to Thomas Credle about consulting, speaking, workshops or media, and request a response.">
+  <PageHead
+    eyebrow="Contact"
+    title="Tell me where you are. <em>I’ll tell you honestly</em> how I can help."
+  />
+
+  <section class="section--tight container grid-12">
+    <div class="span-12 span-8">
+      <form class="contact-box card" action={action} method="post">
+        <div class="box-head">
+          <h2 class="h3">Send a message</h2>
+          <p class="muted small">Fields marked <span aria-hidden="true">*</span><span class="visually-hidden">with an asterisk</span> are required.</p>
+        </div>
+
+        <fieldset>
+          <legend>Your details</legend>
+          <div class="two">
+            <div class="field"><label for="name">Full name *</label><input id="name" name="name" autocomplete="name" required /></div>
+            <div class="field"><label for="email">Email *</label><input id="email" name="email" type="email" autocomplete="email" required /></div>
+          </div>
+          <div class="two">
+            <div class="field"><label for="phone">Telephone</label><input id="phone" name="phone" type="tel" autocomplete="tel" inputmode="tel" placeholder="(555) 555-5555" /></div>
+            <div class="field"><label for="company">Business or organization</label><input id="company" name="company" autocomplete="organization" /></div>
+          </div>
+        </fieldset>
+
+        <fieldset>
+          <legend>Social profile <span class="opt">(optional)</span></legend>
+          <div class="two social">
+            <div class="field">
+              <label for="social_platform">Platform</label>
+              <select id="social_platform" name="social_platform">
+                <option value="">Choose…</option>
+                {platforms.map((p) => <option value={p}>{p}</option>)}
+              </select>
+            </div>
+            <div class="field"><label for="social_handle">Profile link or @handle</label><input id="social_handle" name="social_profile" placeholder="linkedin.com/in/your-name" /></div>
+          </div>
+        </fieldset>
+
+        <fieldset>
+          <legend>Your message</legend>
+          <div class="field">
+            <label for="topic">What’s this about?</label>
+            <select id="topic" name="topic">{topics.map((t) => <option value={t.value}>{t.label}</option>)}</select>
+          </div>
+          <div class="field"><label for="message">Message *</label><textarea id="message" name="message" rows="6" required placeholder="A few lines about your business, your goal and your timeline."></textarea></div>
+        </fieldset>
+
+        <fieldset class="respond">
+          <legend>Response</legend>
+          <label class="check"><input type="checkbox" name="response_requested" value="Yes — please respond" checked /> <span>Yes, please get back to me</span></label>
+          <div class="two">
+            <div class="field">
+              <label for="preferred">Best way to reach me</label>
+              <select id="preferred" name="preferred_contact">
+                <option>Email</option>
+                <option>Phone call</option>
+                <option>Text message</option>
+                <option>Social media message</option>
+              </select>
+            </div>
+            <div class="field">
+              <label for="best_time">Best time to reach me</label>
+              <select id="best_time" name="best_time">
+                <option>Any time</option>
+                <option>Morning</option>
+                <option>Afternoon</option>
+                <option>Evening</option>
+              </select>
+            </div>
+          </div>
+        </fieldset>
+
+        {usesFormSubmit ? (
+          <>
+            <input type="hidden" name="_subject" value="New message from john-thomas-credle.com" />
+            <input type="hidden" name="_template" value="table" />
+            <input type="hidden" name="_captcha" value="false" />
+            <input type="hidden" name="_next" value={thanksUrl} />
+            <input type="text" name="_honey" tabindex="-1" autocomplete="off" class="visually-hidden" aria-hidden="true" />
+          </>
+        ) : (
+          <input type="text" name="_gotcha" tabindex="-1" autocomplete="off" class="visually-hidden" aria-hidden="true" />
+        )}
+
+        <div class="submit">
+          <button class="btn" type="submit">Send message <span class="arrow" aria-hidden="true">→</span></button>
+          <p class="muted small">Your details are used only to reply to you.</p>
+        </div>
+      </form>
+    </div>
+
+    <aside class="span-12 span-4 start-9 side">
+      <div>
+        <p class="eyebrow">Email</p>
+        <p><a class="email" href={`mailto:${site.email}`}>{site.email}</a></p>
+      </div>
+      <div>
+        <p class="eyebrow">Based in</p>
+        <p>{site.location}</p>
+        <p class="muted small">In person across West Georgia and East Alabama; online nationwide.</p>
+      </div>
+      <div><p class="eyebrow">Elsewhere</p><p><a href={site.social.linkedin} target="_blank" rel="noopener">LinkedIn</a></p></div>
+      {site.bookingUrl && <div><a class="btn btn--ghost" href={site.bookingUrl}>Book a call</a></div>}
+    </aside>
+  </section>
+</Base>
+
+<script is:inline define:vars={{ topicKeys }}>
+  const key = new URLSearchParams(location.search).get('topic');
+  const select = document.getElementById('topic');
+  if (key && select && topicKeys[key]) select.value = topicKeys[key];
+</script>
+
+<style>
+  .contact-box { display: grid; gap: var(--space-l); padding: clamp(1.25rem, 0.8rem + 2vw, 2.5rem); margin-bottom: var(--space-xl); }
+  .box-head { display: grid; gap: var(--space-3xs); }
+  fieldset { border: 0; padding: 0; margin: 0; display: grid; gap: var(--space-m); min-width: 0; }
+  legend {
+    font-size: var(--text-xs); font-weight: var(--weight-semibold); letter-spacing: var(--tracking-label); text-transform: uppercase;
+    color: var(--color-muted); padding: 0 0 var(--space-xs); margin-bottom: var(--space-2xs); width: 100%; border-bottom: 1px solid var(--color-line);
+  }
+  .opt { text-transform: none; letter-spacing: 0; font-weight: var(--weight-regular); }
+  .two { display: grid; grid-template-columns: 1fr 1fr; gap: var(--space-m); }
+  .social { grid-template-columns: 2fr 3fr; }
+  @media (max-width: 40rem) { .two, .social { grid-template-columns: 1fr; } }
+  .check { display: flex; align-items: center; gap: var(--space-xs); font-weight: var(--weight-semibold); cursor: pointer; }
+  .check input { width: 1.15rem; height: 1.15rem; accent-color: var(--color-accent); }
+  .submit { display: flex; flex-wrap: wrap; align-items: center; gap: var(--space-s) var(--space-m); }
+  .side { display: grid; gap: var(--space-l); align-content: start; }
+  .side .eyebrow { margin-bottom: var(--space-2xs); }
+  .email { font-family: var(--font-display); font-size: var(--text-lg); white-space: nowrap; }
+  @media (min-width: 60rem) { .side { padding-left: var(--space-m); } }
+  .small { font-size: var(--text-sm); }
+</style>
