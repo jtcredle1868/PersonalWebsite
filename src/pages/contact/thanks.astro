@@ -1,0 +1,23 @@
+---
+import Base from '../../layouts/Base.astro';
+import { site } from '../../data/site';
+import { url } from '../../lib/url';
+---
+
+<Base title="Message sent" description="Thanks for getting in touch.">
+  <section class="container wrap">
+    <p class="eyebrow">Message sent</p>
+    <h1>Thank you — <em>I’ve got it.</em></h1>
+    <p class="lede">I read every message personally and will reply within two business days. If it’s urgent, email <a href={`mailto:${site.email}`}>{site.email}</a>.</p>
+    <div class="cluster">
+      <a class="btn" href={url('/')}>Back to home</a>
+      <a class="btn btn--ghost" href={url('/blog')}>Read the blog</a>
+    </div>
+  </section>
+</Base>
+
+<style>
+  .wrap { padding-block: var(--space-2xl); display: grid; gap: var(--space-m); justify-items: start; }
+  h1 { font-size: var(--text-4xl); }
+  h1 em { color: var(--color-accent); }
+</style>

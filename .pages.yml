@@ -6,7 +6,7 @@ media:
 
 content:
   - name: writing
-    label: Writing (blog, articles, how-to)
+    label: Blog (posts, articles, how-to)
     type: collection
     path: src/content/writing
     filename: '{primary}.md'

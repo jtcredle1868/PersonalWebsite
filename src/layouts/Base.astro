@@ -12,7 +12,7 @@ interface Props {
   type?: 'website' | 'article';
 }
 
-const { title, description = site.description, image = '/images/panel.jpg', type = 'website' } = Astro.props;
+const { title, description = site.description, image = '/images/headshot-square.jpg', type = 'website' } = Astro.props;
 const pageTitle = title ? `${title} · ${site.name}` : site.title;
 const canonical = new URL(Astro.url.pathname, Astro.site);
 const ogImage = new URL(url(image), Astro.site);
@@ -27,7 +27,7 @@ const ogImage = new URL(url(image), Astro.site);
     <meta name="description" content={description} />
     <link rel="canonical" href={canonical} />
     <link rel="icon" href={url('/favicon.svg')} type="image/svg+xml" />
-    <link rel="alternate" type="application/rss+xml" title={`${site.name} — Writing`} href={url('/rss.xml')} />
+    <link rel="alternate" type="application/rss+xml" title={`${site.name} — Blog`} href={url('/rss.xml')} />
     <link rel="sitemap" href={url('/sitemap-index.xml')} />
 
     <meta property="og:type" content={type} />

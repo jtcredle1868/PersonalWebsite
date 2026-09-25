@@ -19,10 +19,10 @@ Built with [Astro](https://astro.build) — a fast, static site with no server o
 | `/about` | Bio, career timeline, education, certifications, awards, advisory service | `src/data/site.ts` |
 | `/services` | Consulting offers and process | `src/data/site.ts` |
 | `/speaking` | Signature topics and past talks | `src/pages/speaking.astro`, `src/data/site.ts` |
-| `/writing` | Blog posts, articles and how-to guides (filterable, with RSS) | `src/content/writing/*.md` |
+| `/blog` | Blog posts, articles and how-to guides (filterable, with RSS). Old `/writing` links redirect here. | `src/content/writing/*.md` |
 | `/videos` | Video lessons + the course/workshop catalog | `src/content/videos/*.md`, `src/data/site.ts` |
 | `/books` | Books — published, in progress or forthcoming | `src/content/books/*.md` |
-| `/contact` | Contact form (Formspree), email, LinkedIn | `src/data/site.ts` |
+| `/contact` | Contact box: name, email, telephone, social profile, message, response request; email info@john-thomas-credle.com | `src/pages/contact/index.astro`, `src/data/site.ts` |
 | `/styleguide` | Every design token and component, for review | `src/styles/tokens.css` |
 | `/rss.xml`, `/sitemap-index.xml` | Feed for subscribers; sitemap for search engines | generated |
 
@@ -31,7 +31,7 @@ Built with [Astro](https://astro.build) — a fast, static site with no server o
 ### Option A — in the browser (no code)
 
 1. Go to **[app.pagescms.org](https://app.pagescms.org)** and sign in with GitHub.
-2. Open this repository. You'll see **Writing**, **Videos** and **Books**.
+2. Open this repository. You'll see **Blog**, **Videos** and **Books**.
 3. Click **Add entry**, fill in the form, upload a cover image if you like, and **Save**.
 4. Saving commits to GitHub; the site rebuilds and publishes automatically in about a minute.
 
@@ -50,28 +50,39 @@ Copy the `_template.md` in `src/content/writing/`, `src/content/videos/` or `src
 
 All of it is in **`src/data/site.ts`** — plain text you can edit in GitHub's web editor.
 
-## Before launch — fill these in
+## Contact form
 
-In `src/data/site.ts`:
+Submissions are delivered by [FormSubmit](https://formsubmit.co) to **info@john-thomas-credle.com** (set in `src/data/site.ts`) — no account needed.
 
-- `email` — a public contact email (enables the email link and the mailto fallback for the form).
-- `formEndpoint` — create a free form at [formspree.io](https://formspree.io) and paste its URL so the contact form delivers to your inbox. Until one of these two is set, `/contact` directs visitors to LinkedIn.
-- `bookingUrl` — optional Calendly / Cal.com / Microsoft Bookings link; adds "Book a call" buttons.
-- `social.youtube` — optional channel URL once videos are posted.
+1. Make sure the `info@john-thomas-credle.com` mailbox exists and receives mail (set up email hosting with your domain registrar, Google Workspace or Microsoft 365).
+2. Submit the form once yourself. FormSubmit emails that inbox a one-time **activation** link — click it. Every submission after that arrives as an email with all fields in a table, and the visitor lands on `/contact/thanks`.
 
-Also recommended: a professional headshot. Save it as `public/images/headshot.jpg` and replace the panel photo in the home hero (`src/pages/index.astro`) and the About page.
+Prefer Formspree? Paste its endpoint into `formEndpoint` in `src/data/site.ts`.
 
-## Publishing (GitHub Pages)
+Optional settings in `src/data/site.ts`: `bookingUrl` (Calendly / Cal.com link — adds "Book a call" buttons) and `social.youtube`.
 
-The workflow in `.github/workflows/deploy.yml` builds and deploys on every push to `main`.
+## Publishing & custom domain (john-thomas-credle.com)
 
-1. Merge this branch into `main`.
-2. In the repository, go to **Settings → Pages** and set **Source** to **GitHub Actions**.
-3. The site will be live at `https://jtcredle1868.github.io/PersonalWebsite/`.
+The workflow in `.github/workflows/deploy.yml` builds and deploys to GitHub Pages on every push to `main`. `public/CNAME` already contains `john-thomas-credle.com`.
 
-**Custom domain (recommended):** buy a domain (e.g. `thomascredle.com`), add it under **Settings → Pages → Custom domain**, and follow GitHub's DNS instructions. The build picks up the new address automatically.
+To connect the domain:
 
-> Images placed *inside* a post's body should use a full URL, or be used as the post's **cover** image, when the site is served from the `/PersonalWebsite/` sub-path. On a custom domain this doesn't matter.
+1. **GitHub:** Settings → Pages → **Custom domain** → enter `john-thomas-credle.com` → Save.
+2. **DNS at your domain registrar** — add these records:
+
+   | Type | Name / Host | Value |
+   | --- | --- | --- |
+   | A | `@` | `185.199.108.153` |
+   | A | `@` | `185.199.109.153` |
+   | A | `@` | `185.199.110.153` |
+   | A | `@` | `185.199.111.153` |
+   | CNAME | `www` | `jtcredle1868.github.io` |
+
+   Remove any existing "parked" or forwarding A/CNAME records for `@` and `www` first. Leave MX (email) records alone.
+3. When the DNS check passes (minutes to a few hours), tick **Enforce HTTPS** on the same settings page.
+4. Re-run the latest **Deploy site to GitHub Pages** workflow (Actions tab → Re-run) so links are rebuilt for the new domain.
+
+Until the domain is live, the site stays available at `https://jtcredle1868.github.io/PersonalWebsite/`.
 
 ## Running locally
 

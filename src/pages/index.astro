@@ -27,12 +27,12 @@ const [lead, ...moreQuotes] = testimonials;
       </p>
       <div class="cluster reveal" style="--i:6">
         <a class="btn" href={url('/services')}>How I can help <span class="arrow" aria-hidden="true">→</span></a>
-        <a class="btn btn--ghost" href={url('/writing')}>Read the latest</a>
+        <a class="btn btn--ghost" href={url('/blog')}>Read the latest</a>
       </div>
     </div>
     <figure class="span-12 span-5 hero-photo reveal" style="--i:3">
-      <img class="photo" src={url('/images/panel.jpg')} alt="Thomas Credle speaking on a small-business capital panel" width="458" height="376" />
-      <figcaption>On a small-business capital access panel, Columbus, Georgia.</figcaption>
+      <img class="photo" src={url('/images/headshot.jpg')} alt="Portrait of Thomas Credle" width="819" height="1024" fetchpriority="high" />
+      <figcaption>J. Thomas Credle, MBA — Columbus, Georgia</figcaption>
     </figure>
   </section>
 
@@ -124,10 +124,10 @@ const [lead, ...moreQuotes] = testimonials;
     <section class="section container">
       <div class="head-row">
         <div>
-          <p class="eyebrow">Writing</p>
+          <p class="eyebrow">Blog</p>
           <h2 class="h2">Notes on capital, finance & teaching.</h2>
         </div>
-        <a class="link-arrow" href={url('/writing')}>All writing →</a>
+        <a class="link-arrow" href={url('/blog')}>All blog posts →</a>
       </div>
       <div class="posts">
         {posts.map((p, i) => <PostRow post={p} index={i} />)}
@@ -154,7 +154,7 @@ const [lead, ...moreQuotes] = testimonials;
   .display span { display: block; }
   .display .accent em { color: var(--color-accent); font-style: italic; font-variation-settings: 'opsz' 144, 'SOFT' 100; }
   .hero-photo { padding-right: 14px; padding-bottom: 14px; }
-  .hero-photo img { aspect-ratio: 5 / 4; }
+  .hero-photo img { aspect-ratio: 4 / 5; max-height: 34rem; object-position: 50% 20%; }
 
   .ledger-wrap { border-block: 1px solid var(--color-line); background: linear-gradient(180deg, var(--color-surface-raised), var(--color-surface)); }
   .ledger { display: grid; grid-template-columns: repeat(4, 1fr); margin: 0; }
